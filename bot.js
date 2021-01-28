@@ -16,7 +16,7 @@ client.on("ready", async () => {
 client.on("message", async (msg) => {
   const requirements = [
     msg.channel.id === process.env.TEST_CHANNEL_ID,
-    msg.content.toLowerCase() === "test",
+    msg.content.toLowerCase() === "gaming",
     busy === false,
   ];
 

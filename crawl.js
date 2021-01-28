@@ -6,17 +6,17 @@ const cookies = require("./cookies");
 let driver;
 
 const connectToSite = async () => {
-  console.log("Begin connecting.");
+  console.log("Begin connecting to website");
   driver = await new Builder()
     .forBrowser("chrome")
     .setChromeOptions(new chrome.Options().addArguments("--headless"))
     .build();
 
   try {
-    console.log("Requesting first time.");
+    console.log("Creating first request to website.");
     await driver.get("http://surviv.io/#1111");
 
-    console.log("Gotten first time.");
+    console.log("Gotten first response.");
     for (let object of cookies) {
       const { name, value, domain } = object;
       await driver.manage().addCookie({ name, value, domain });
@@ -37,7 +37,7 @@ const connectToSite = async () => {
 
     await driver.get("http://surviv.io/#1111");
 
-    console.log("Gotten second time.");
+    console.log("Gotten second response.");
 
     console.log("Creating team.");
     await createTeam();
@@ -54,14 +54,14 @@ const createTeam = async () => {
     )
   );
   while (visibleModals.length > 0) {
-    console.log("Open modal found!");
+    console.log("Open modal found.");
     try {
       const link = await visibleModals[0].findElement(By.css(".close"));
 
       await driver.executeScript("arguments[0].click();", link);
       await driver.sleep(10000);
 
-      console.log("Link Clicked!");
+      console.log("Modal closed.");
 
       visibleModals = await driver.findElements(
         By.xpath(

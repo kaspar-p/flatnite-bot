@@ -6,7 +6,7 @@ require("dotenv").config();
 let busy = false;
 
 client.on("ready", async () => {
-  console.log("Successfully connected!");
+  console.log("Successfully connected to discord server.");
 
   // Begin accessing surviv.io
   await connectToSite();

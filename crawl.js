@@ -87,4 +87,4 @@ const getLink = async () => {
   return url;
 };
 
-module.exports = { connectToSite, beginChromeDriver, getLink };
+module.exports = { connectToSite, getLink };

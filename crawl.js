@@ -1,24 +1,17 @@
-require("chromedriver");
+const chrome = require("selenium-webdriver/chrome");
 const { Builder, By } = require("selenium-webdriver");
 const childProcess = require("child_process");
-const chromedriver = require("chromedriver");
-const binPath = chromedriver.path;
 const localStorageData = require("./ls");
 const cookies = require("./cookies");
 
 let driver;
 
-// Begin chromedriver executable
-const beginChromeDriver = () => {
-  console.log("Beginning chromedriver!");
-  childProcess.execFile(binPath, [], function (err, stdout, stderr) {
-    if (err || stderr) console.log(err, stderr);
-  });
-};
-
 const connectToSite = async () => {
   console.log("begin method");
-  driver = await new Builder().forBrowser("chrome").build();
+  driver = await new Builder()
+		.forBrowser("chrome")
+		.setChromeOptions(new chrome.Options().addArguments("--headless"))
+		.build();
 
   try {
     console.log("Requesting first time!");

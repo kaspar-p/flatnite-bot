@@ -9,13 +9,12 @@ client.on("ready", async () => {
   console.log("Successfully connected!");
 
   // Begin accessing surviv.io
-  await beginChromeDriver();
   await connectToSite();
 });
 
 client.on("message", async (msg) => {
   const requirements = [
-    msg.channel.id === process.env.TEST_CHANNEL_ID,
+    msg.channel.id === process.env.CHANNEL_ID,
     msg.content.toLowerCase() === "gaming",
     busy === false,
   ];

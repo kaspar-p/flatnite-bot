@@ -1,20 +1,19 @@
 const chrome = require("selenium-webdriver/chrome");
 const { Builder, By } = require("selenium-webdriver");
-const childProcess = require("child_process");
 const localStorageData = require("./ls");
 const cookies = require("./cookies");
 
 let driver;
 
 const connectToSite = async () => {
-  console.log("begin method");
+  console.log("Begin connecting.");
   driver = await new Builder()
-		.forBrowser("chrome")
-		.setChromeOptions(new chrome.Options().addArguments("--headless"))
-		.build();
+    .forBrowser("chrome")
+    .setChromeOptions(new chrome.Options().addArguments("--headless"))
+    .build();
 
   try {
-    console.log("Requesting first time!");
+    console.log("Requesting first time.");
     await driver.get("http://surviv.io/#1111");
 
     console.log("Gotten first time!");
@@ -23,7 +22,7 @@ const connectToSite = async () => {
       await driver.manage().addCookie({ name, value, domain });
     }
 
-    console.log("Done adding cookies!");
+    console.log("Done adding cookies.");
 
     for (let key of Object.keys(localStorageData)) {
       await driver.executeScript(
@@ -33,25 +32,18 @@ const connectToSite = async () => {
       );
     }
 
-    console.log("Done adding localStorage data, requesting second time!");
+    console.log("Done adding localStorage data.");
+    console.log("Requesting second time for authentication.");
 
     await driver.get("http://surviv.io/#1111");
 
-    console.log("Gotten second time! You should be authenticated now!");
+    console.log("Gotten second time.");
   } catch (err) {
     throw Error(error);
   }
 };
 
 const getLink = async () => {
-  let randomElement = await driver.findElement(By.css("div"));
-  await driver.executeScript("arguments[0].click();", randomElement);
-  randomElement = await driver.findElement(By.css("div"));
-  await driver.executeScript("arguments[0].click();", randomElement);
-  randomElement = await driver.findElement(By.css("div"));
-  await driver.executeScript("arguments[0].click();", randomElement);
-  console.log("on the website");
-
   // Click through all promotional modals
   let visibleModals = await driver.findElements(
     By.xpath(
@@ -77,10 +69,9 @@ const getLink = async () => {
       break;
     }
   }
-  console.log("Done with links");
+  console.log("Done with links.");
 
   const createTeamButton = await driver.findElement(By.id("btn-create-team"));
-  console.log("create team button: ", createTeamButton);
   await createTeamButton.click();
 
   await driver.sleep(1000);
@@ -89,7 +80,10 @@ const getLink = async () => {
 
   await driver.quit();
 
+  console.log("Restarting connection to site.");
   connectToSite();
+
+  console.log("Link sent.");
   return url;
 };
 

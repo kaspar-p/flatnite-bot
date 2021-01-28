@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const { connectToSite, getLink, beginChromeDriver } = require("./crawl");
+const { connectToSite, getLink } = require("./crawl");
 require("dotenv").config();
 
 let busy = false;

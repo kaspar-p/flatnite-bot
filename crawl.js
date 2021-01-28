@@ -16,7 +16,7 @@ const connectToSite = async () => {
     console.log("Requesting first time.");
     await driver.get("http://surviv.io/#1111");
 
-    console.log("Gotten first time!");
+    console.log("Gotten first time.");
     for (let object of cookies) {
       const { name, value, domain } = object;
       await driver.manage().addCookie({ name, value, domain });
@@ -38,12 +38,15 @@ const connectToSite = async () => {
     await driver.get("http://surviv.io/#1111");
 
     console.log("Gotten second time.");
+
+    console.log("Creating team.");
+    await createTeam();
   } catch (err) {
     throw Error(error);
   }
 };
 
-const getLink = async () => {
+const createTeam = async () => {
   // Click through all promotional modals
   let visibleModals = await driver.findElements(
     By.xpath(
@@ -69,13 +72,14 @@ const getLink = async () => {
       break;
     }
   }
-  console.log("Done with links.");
 
   const createTeamButton = await driver.findElement(By.id("btn-create-team"));
   await createTeamButton.click();
 
-  await driver.sleep(1000);
+  console.log("Team created.");
+};
 
+const getLink = async () => {
   const url = await driver.getCurrentUrl();
 
   await driver.quit();

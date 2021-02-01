@@ -14,6 +14,7 @@ client.on("ready", async () => {
 });
 
 client.on("message", async (msg) => {
+  console.log("Message received");
   const rightChannel = msg.channel.id === process.env.CHANNEL_ID;
   const rightMessage = msg.content.toLowerCase() === "gaming";
 

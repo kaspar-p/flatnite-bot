@@ -113,7 +113,7 @@ const leaveTeam = async () => {
 const getLink = async () => {
   try {
     const url = await driver.getCurrentUrl();
-    return url;
+    return url.toString();
   } catch (error) {
     console.log("Error in getting link: ", error);
     throw new Error(error);
@@ -126,6 +126,7 @@ const handleUserInput = async () => {
 
     await createTeam();
     const link = await getLink();
+    console.log("Link gotten: ", link);
     await leaveTeam();
 
     console.log("-- Finished handling user input --");

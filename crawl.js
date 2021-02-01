@@ -41,17 +41,24 @@ const connectToSite = async () => {
     await closeAllModals();
   } catch (error) {
     console.log("Error reached: ", error);
-    throw Error(error);
+    throw new Error(error);
   }
 };
 
 const closeAllModals = async () => {
   // Click through all promotional modals
-  let visibleModals = await driver.findElements(
-    By.xpath(
-      `//div[contains(@class, 'modal') and contains(@style, 'display: block')]`
-    )
-  );
+  let visibleModals;
+  try {
+    visibleModals = await driver.findElements(
+      By.xpath(
+        `//div[contains(@class, 'modal') and contains(@style, 'display: block')]`
+      )
+    );
+  } catch (error) {
+    console.log("Error reached in finding modals to close: ", error);
+    throw new Error(error);
+  }
+
   while (visibleModals.length > 0) {
     console.log("Open modal found.");
     try {
@@ -78,35 +85,55 @@ const closeAllModals = async () => {
 };
 
 const createTeam = async () => {
-  // Assume that the bot is at the homepage
-  const createTeamButton = await driver.findElement(By.id("btn-create-team"));
-  await createTeamButton.click();
+  try {
+    // Assume that the bot is at the homepage
+    const createTeamButton = await driver.findElement(By.id("btn-create-team"));
+    await createTeamButton.click();
 
-  console.log("Team created.");
+    console.log("Team created.");
+  } catch (error) {
+    console.log("Error in creating team: ", error);
+    throw new Error(error);
+  }
 };
 
 const leaveTeam = async () => {
-  // Assume that the bot is already sitting in a created team
-  const leaveTeamButton = await driver.findElement(By.id("close-team-menu"));
-  await leaveTeamButton.click();
+  try {
+    // Assume that the bot is already sitting in a created team
+    const leaveTeamButton = await driver.findElement(By.id("close-team-menu"));
+    await leaveTeamButton.click();
 
-  console.log("Team left.");
+    console.log("Team left.");
+  } catch (error) {
+    console.log("Error in leaving team: ", error);
+    throw new Error(error);
+  }
 };
 
 const getLink = async () => {
-  const url = await driver.getCurrentUrl();
-  return url;
+  try {
+    const url = await driver.getCurrentUrl();
+    return url;
+  } catch (error) {
+    console.log("Error in getting link: ", error);
+    throw new Error(error);
+  }
 };
 
 const handleUserInput = async () => {
-  console.log("-- Begin handling user input --");
+  try {
+    console.log("-- Begin handling user input --");
 
-  await createTeam();
-  const link = await getLink();
-  await leaveTeam();
+    await createTeam();
+    const link = await getLink();
+    await leaveTeam();
 
-  console.log("-- Finished handling user input --");
-  return link;
+    console.log("-- Finished handling user input --");
+    return link;
+  } catch (error) {
+    console.log("User input error reached: ", error);
+    throw new Error(error);
+  }
 };
 
 module.exports = { connectToSite, handleUserInput };

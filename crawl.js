@@ -72,6 +72,9 @@ const closeAllModals = async () => {
       break;
     }
   }
+
+  console.log("All modals closed.");
+  return;
 };
 
 const createTeam = async () => {

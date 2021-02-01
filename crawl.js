@@ -125,6 +125,7 @@ const handleUserInput = async () => {
     console.log("-- Begin handling user input --");
 
     await createTeam();
+    await driver.sleep(1000);
     const link = await getLink();
     console.log("Link gotten: ", link);
     await leaveTeam();

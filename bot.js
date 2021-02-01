@@ -14,16 +14,18 @@ client.on("ready", async () => {
 });
 
 client.on("message", async (msg) => {
-  console.log("Message received");
   const rightChannel = msg.channel.id === process.env.CHANNEL_ID;
   const rightMessage = msg.content.toLowerCase() === "gaming";
 
   if (rightChannel && rightMessage) {
     if (ready) {
+      ready = false;
       // Create a flatnite lobby and send the link
       msg.channel.send("Get in here nerds: ");
       const link = await handleUserInput();
       msg.channel.send(link);
+
+      ready = true;
     } else {
       msg.channel.send(
         "Bot is working hard with tears streaming down its face.\n" +

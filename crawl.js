@@ -41,7 +41,7 @@ const connectToSite = async () => {
     await closeAllModals();
   } catch (error) {
     console.log("Error reached: ", error);
-    throw new Error(error);
+    return;
   }
 };
 
@@ -56,7 +56,7 @@ const closeAllModals = async () => {
     );
   } catch (error) {
     console.log("Error reached in finding modals to close: ", error);
-    throw new Error(error);
+    return;
   }
 
   while (visibleModals.length > 0) {
@@ -93,7 +93,7 @@ const createTeam = async () => {
     console.log("Team created.");
   } catch (error) {
     console.log("Error in creating team: ", error);
-    throw new Error(error);
+    return;
   }
 };
 
@@ -106,7 +106,7 @@ const leaveTeam = async () => {
     console.log("Team left.");
   } catch (error) {
     console.log("Error in leaving team: ", error);
-    throw new Error(error);
+    return;
   }
 };
 
@@ -116,7 +116,7 @@ const getLink = async () => {
     return url.toString();
   } catch (error) {
     console.log("Error in getting link: ", error);
-    throw new Error(error);
+    return;
   }
 };
 
@@ -134,7 +134,7 @@ const handleUserInput = async () => {
     return link;
   } catch (error) {
     console.log("User input error reached: ", error);
-    throw new Error(error);
+    return;
   }
 };
 

@@ -60,7 +60,7 @@ const closeAllModals = async () => {
   }
 
   while (visibleModals.length > 0) {
-    console.log("Open modal found.");
+    console.log("Open modals found: ", visibleModals);
     try {
       const link = await visibleModals[0].findElement(By.css(".close"));
 
@@ -100,7 +100,7 @@ const createTeam = async () => {
 const leaveTeam = async () => {
   try {
     // Assume that the bot is already sitting in a created team
-    const leaveTeamButton = await driver.findElement(By.id("close-team-menu"));
+    const leaveTeamButton = await driver.findElement(By.id("btn-team-leave"));
     await leaveTeamButton.click();
 
     console.log("Team left.");

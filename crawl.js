@@ -6,7 +6,7 @@ const cookies = require("./cookies");
 let driver;
 
 const connectToSite = async () => {
-  console.log("Begin connecting to website");
+  console.log("Begin connecting to website.");
   driver = await new Builder()
     .forBrowser("chrome")
     .setChromeOptions(new chrome.Options().addArguments("--headless"))
@@ -38,10 +38,7 @@ const connectToSite = async () => {
     await driver.get("http://surviv.io/#1111");
 
     console.log("Gotten second response.");
-
-    console.log("Creating team.");
     await closeAllModals();
-    await createTeam();
   } catch (err) {
     throw Error(error);
   }
@@ -87,17 +84,24 @@ const leaveTeam = async () => {
   // Assume that the bot is already sitting in a created team
   const leaveTeamButton = await driver.findElement(By.id("close-team-menu"));
   await leaveTeamButton.click();
+
+  console.log("Team left.");
 };
 
 const getLink = async () => {
   const url = await driver.getCurrentUrl();
-
-  // Navigate back to the homepage
-  console.log("Leaving team");
-  await leaveTeam();
-  await createTeam();
-
   return url;
 };
 
-module.exports = { connectToSite, getLink };
+const handleUserInput = async () => {
+  console.log("-- Begin handling user input --");
+
+  await createTeam();
+  const link = await getLink();
+  await leaveTeam();
+
+  console.log("-- Finished handling user input --");
+  return link;
+};
+
+module.exports = { connectToSite, handleUserInput };

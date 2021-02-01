@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const { connectToSite, getLink } = require("./crawl");
+const { connectToSite, handleUserInput } = require("./crawl");
 require("dotenv").config();
 
 let ready = false;
@@ -21,7 +21,7 @@ client.on("message", async (msg) => {
     if (ready) {
       // Create a flatnite lobby and send the link
       msg.channel.send("Get in here nerds: ");
-      const link = await getLink();
+      const link = await handleUserInput();
       msg.channel.send(link);
     } else {
       msg.channel.send(

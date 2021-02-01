@@ -39,7 +39,8 @@ const connectToSite = async () => {
 
     console.log("Gotten second response.");
     await closeAllModals();
-  } catch (err) {
+  } catch (error) {
+    console.log("Error reached: ", error);
     throw Error(error);
   }
 };
@@ -57,7 +58,7 @@ const closeAllModals = async () => {
       const link = await visibleModals[0].findElement(By.css(".close"));
 
       await driver.executeScript("arguments[0].click();", link);
-      await driver.sleep(10000);
+      await driver.sleep(1000);
 
       console.log("Modal closed.");
 
@@ -67,6 +68,7 @@ const closeAllModals = async () => {
         )
       );
     } catch (error) {
+      console.log("Error encountered while closing modal: ", error);
       break;
     }
   }

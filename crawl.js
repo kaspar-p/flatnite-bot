@@ -40,13 +40,14 @@ const connectToSite = async () => {
     console.log("Gotten second response.");
 
     console.log("Creating team.");
+    await closeAllModals();
     await createTeam();
   } catch (err) {
     throw Error(error);
   }
 };
 
-const createTeam = async () => {
+const closeAllModals = async () => {
   // Click through all promotional modals
   let visibleModals = await driver.findElements(
     By.xpath(
@@ -72,22 +73,30 @@ const createTeam = async () => {
       break;
     }
   }
+};
 
+const createTeam = async () => {
+  // Assume that the bot is at the homepage
   const createTeamButton = await driver.findElement(By.id("btn-create-team"));
   await createTeamButton.click();
 
   console.log("Team created.");
 };
 
+const leaveTeam = async () => {
+  // Assume that the bot is already sitting in a created team
+  const leaveTeamButton = await driver.findElement(By.id("close-team-menu"));
+  await leaveTeamButton.click();
+};
+
 const getLink = async () => {
   const url = await driver.getCurrentUrl();
 
-  await driver.quit();
+  // Navigate back to the homepage
+  console.log("Leaving team");
+  await leaveTeam();
+  await createTeam();
 
-  console.log("Restarting connection to site.");
-  connectToSite();
-
-  console.log("Link sent.");
   return url;
 };
 

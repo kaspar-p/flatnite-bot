@@ -13,6 +13,17 @@ const writeRegister = (newRegister) => {
   }
 };
 
+const deleteRegister = (registerToDelete) => {
+  const data = fs.readFileSync(REGISTRY_FILEPATH, { encoding: "utf-8" });
+  const dataRows = data.split("\n");
+
+  const index = dataRows.indexOf(registerToDelete);
+  dataRows.splice(index, 1);
+
+  const newFile = dataRows.join("\n");
+  fs.writeFileSync(REGISTRY_FILEPATH, newFile, { encoding: "utf-8" });
+};
+
 const checkValidation = (newRegister) => {
   if (!newRegister) {
     return {
@@ -40,4 +51,4 @@ const checkValidation = (newRegister) => {
   return { isValid: errorMessages.length === 0, errorMessages };
 };
 
-module.exports = { writeRegister, checkValidation };
+module.exports = { writeRegister, checkValidation, deleteRegister };

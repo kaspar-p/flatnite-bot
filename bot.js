@@ -2,7 +2,7 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const { connectToSite } = require("./crawl");
-const handleMessages = require("./messageHandler");
+const handleMessages = require("./handlers/messageHandler");
 const available = require("./balancer");
 
 client.on("ready", async () => {

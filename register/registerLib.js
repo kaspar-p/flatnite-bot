@@ -1,5 +1,7 @@
 const fs = require("fs");
-const { REGISTRY_FILEPATH } = require("../constants");
+const _ = require("lodash");
+const { REGISTRY_FILEPATH, COMMANDS } = require("../constants");
+const { crawlRequestHandler } = require("../handlers/handlers");
 
 const parseRegisters = () => {
   const registers = [];
@@ -14,39 +16,27 @@ const parseRegisters = () => {
   return registers;
 };
 
+let updateCommands = () => {
+  acceptedMessages.forEach((aMsg) => {
+    commands[aMsg] = {
+      command: aMsg,
+      helpText: "A recognized cue to begin gaming!",
+      handler: crawlRequestHandler,
+    };
+  });
+};
+
 let acceptedMessages = parseRegisters();
 const updateAcceptableMessages = () => {
   let newParsed = parseRegisters();
   for (let p of newParsed) {
     acceptedMessages[newParsed.indexOf(p)] = p;
   }
-  acceptedMessages.forEach((aMsg) => {
-    commands[aMsg] = {
-      command: aMsg,
-      helpText: "A recognized cue to begin gaming!",
-    };
-  });
+  updateCommands();
 };
 
-let commands = {
-  ".register": {
-    command: ".register",
-    helpText:
-      "Typing '.register <newcommand>' allows flatnite-bot to recognize <newcommand> as the cue to start gaming!",
-  },
-  ".help": {
-    command: ".help",
-    helpText:
-      "Typing '.help' shows the list of all commands recognized by gamingbot!",
-  },
-};
-
-acceptedMessages.forEach((aMsg) => {
-  commands[aMsg] = {
-    command: aMsg,
-    helpText: "A recognized cue to begin gaming!",
-  };
-});
+let commands = _.cloneDeep(COMMANDS);
+updateCommands();
 
 const requirements = (newRegister) => [
   {

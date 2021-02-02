@@ -1,40 +1,16 @@
-const { writeRegister, checkValidation } = require("./register/register");
-const { handleUserInput } = require("./crawl");
-const { commands, acceptedMessages } = require("./register/registerLib");
-const available = require("./balancer");
-const { CHANNEL } = require("./constants");
+const { handleUserInput } = require("../crawl");
+const { commands, acceptedMessages } = require("../register/registerLib");
+const available = require("../balancer");
+const { CHANNEL } = require("../constants");
+const {
+  writeRegister,
+  deleteRegister,
+  checkValidation,
+} = require("../register/register");
 
 const sendMessage = (client, text) => {
   const channel = client.channels.cache.get(CHANNEL);
   channel.send(text);
-};
-
-const handleMessage = async (client, msg) => {
-  const whichMatch = () => {
-    const matches = (command) => msg.content.startsWith(command) == true;
-    const matchesAccepted = acceptedMessages.includes(msg.content);
-
-    if (matches(".register")) return ".register";
-    if (matches(".help")) return ".help";
-    if (matchesAccepted) return "recognized-command";
-  };
-
-  switch (whichMatch()) {
-    case ".register":
-      console.log("Register handler called.");
-      await registerHandler(client, msg);
-      break;
-    case ".help":
-      console.log("Help handler called.");
-      await helpHandler(client, msg);
-      break;
-    case "recognized-command":
-      console.log("Crawl request handler called.");
-      await crawlRequestHandler(client, msg);
-      break;
-    default:
-      break;
-  }
 };
 
 const crawlRequestHandler = async (client, msg) => {
@@ -124,4 +100,22 @@ const registerHandler = async (client, { content }) => {
   }
 };
 
-module.exports = handleMessage;
+const deregisterHandler = async (client, msg) => {
+  if (!msg.content.split(" ")[1]) {
+    sendMessage(client, "The command to deregister cannot be empty!");
+  }
+
+  const command = msg.content.split(" ")[1].trim();
+
+  if (acceptedMessages.includes(command)) {
+    deleteRegister(command);
+    sendMessage(client, `Deleted command '${command}'`);
+  }
+};
+
+module.exports = {
+  helpHandler,
+  registerHandler,
+  crawlRequestHandler,
+  deregisterHandler,
+};

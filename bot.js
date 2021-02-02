@@ -10,7 +10,6 @@ client.on("ready", async () => {
 
   // Begin accessing surviv.io
   await connectToSite();
-  console.log("here");
   available.changeReadyStatus(true);
 });
 

@@ -2,9 +2,10 @@ const { writeRegister, checkValidation } = require("./register/register");
 const { handleUserInput } = require("./crawl");
 const { commands, acceptedMessages } = require("./register/registerLib");
 const available = require("./balancer");
+const { CHANNEL } = require("./constants");
 
 const sendMessage = (client, text) => {
-  const channel = client.channels.cache.get(process.env.TEST_CHANNEL_ID);
+  const channel = client.channels.cache.get(CHANNEL);
   channel.send(text);
 };
 
@@ -39,7 +40,7 @@ const handleMessage = async (client, msg) => {
 };
 
 const crawlRequestHandler = async (client, msg) => {
-  const rightChannel = msg.channel.id === process.env.TEST_CHANNEL_ID;
+  const rightChannel = msg.channel.id === CHANNEL;
 
   console.log("accepted messages: ", acceptedMessages);
 

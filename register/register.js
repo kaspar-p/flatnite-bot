@@ -1,5 +1,6 @@
 const fs = require("fs");
 const registerLib = require("./registerLib");
+const { REGISTRY_FILEPATH } = require("../constants");
 
 const writeRegister = (newRegister) => {
   newRegister = newRegister.toString().trim();
@@ -7,7 +8,7 @@ const writeRegister = (newRegister) => {
   const registers = registerLib.parseRegisters();
 
   if (!registers.includes(newRegister)) {
-    fs.appendFileSync(registerLib.registerFilepath, "\n" + newRegister);
+    fs.appendFileSync(REGISTRY_FILEPATH, "\n" + newRegister);
     registerLib.updateAcceptableMessages();
   }
 };

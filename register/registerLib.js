@@ -1,12 +1,10 @@
 const fs = require("fs");
-const path = require("path");
-
-const registerFilepath = path.resolve(__dirname, "registers.txt");
+const { REGISTRY_FILEPATH } = require("../constants");
 
 const parseRegisters = () => {
   const registers = [];
 
-  const data = fs.readFileSync(registerFilepath, { encoding: "utf-8" });
+  const data = fs.readFileSync(REGISTRY_FILEPATH, { encoding: "utf-8" });
   data.split("\n").forEach((row) => {
     const value = row.trim();
 
@@ -92,7 +90,6 @@ module.exports = {
   parseRegisters,
   commands,
   requirements,
-  registerFilepath,
   acceptedMessages,
   updateAcceptableMessages,
 };

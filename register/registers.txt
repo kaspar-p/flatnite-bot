@@ -1,3 +1,1 @@
 gaming
-stringwithspaces
-UPPERCASE

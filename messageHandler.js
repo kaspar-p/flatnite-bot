@@ -10,8 +10,6 @@ const sendMessage = (client, text) => {
 };
 
 const handleMessage = async (client, msg) => {
-  console.log(msg.content, msg.content.startsWith(".help") == true);
-
   const whichMatch = () => {
     const matches = (command) => msg.content.startsWith(command) == true;
     const matchesAccepted = acceptedMessages.includes(msg.content);
@@ -41,9 +39,6 @@ const handleMessage = async (client, msg) => {
 
 const crawlRequestHandler = async (client, msg) => {
   const rightChannel = msg.channel.id === CHANNEL;
-
-  console.log("accepted messages: ", acceptedMessages);
-
   const rightMessage = acceptedMessages.includes(msg.content);
 
   if (rightChannel && rightMessage) {

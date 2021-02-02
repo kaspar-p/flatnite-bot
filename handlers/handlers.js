@@ -1,7 +1,8 @@
+const _ = require("lodash");
+const { commands } = require("../constants/commands");
 const { handleUserInput } = require("../crawl");
-const { commands, acceptedMessages } = require("../register/registerLib");
 const available = require("../balancer");
-const { CHANNEL } = require("../constants");
+const { CHANNEL } = require("../constants/constants");
 const {
   writeRegister,
   deleteRegister,
@@ -15,7 +16,7 @@ const sendMessage = (client, text) => {
 
 const crawlRequestHandler = async (client, msg) => {
   const rightChannel = msg.channel.id === CHANNEL;
-  const rightMessage = acceptedMessages.includes(msg.content);
+  const rightMessage = msg.content in commands;
 
   if (rightChannel && rightMessage) {
     if (available.ready) {
@@ -57,12 +58,16 @@ const helpHandler = async (client, msg) => {
       );
     }
   } else {
-    sendMessage(
-      client,
-      `Available commands:\n-> .register <newcommand>\n-> .help\n-> .help <command>\n${acceptedMessages
-        .map((aMsg) => `-> ${aMsg}`)
-        .join("\n")}`
-    );
+    console.log(commands);
+
+    const allHelpSnippets = [];
+    _.forEach(commands, (commandObject) => {
+      allHelpSnippets.push(...commandObject.helpSnippets);
+    });
+
+    const formatted = allHelpSnippets.map((e) => `-> ${e}`).join("\n");
+
+    sendMessage(client, `Available commands:\n${formatted}`);
   }
 };
 
@@ -107,15 +112,21 @@ const deregisterHandler = async (client, msg) => {
 
   const command = msg.content.split(" ")[1].trim();
 
-  if (acceptedMessages.includes(command)) {
+  if (command.startsWith(".") || command === "gaming") {
+    sendMessage(client, `Cannot delete base command '${command}'`);
+  } else if (Object.keys(commands).includes(command)) {
     deleteRegister(command);
     sendMessage(client, `Deleted command '${command}'`);
+  } else {
+    sendMessage(client, `Cannot delete unrecognized command: '${command}'`);
   }
 };
 
-module.exports = {
-  helpHandler,
-  registerHandler,
-  crawlRequestHandler,
-  deregisterHandler,
+const handlerMap = {
+  ".help": helpHandler,
+  ".register": registerHandler,
+  ".deregister": deregisterHandler,
+  ".recognized-command": crawlRequestHandler,
 };
+
+module.exports = handlerMap;

@@ -1,15 +1,16 @@
 const fs = require("fs");
-const registerLib = require("./registerLib");
-const { REGISTRY_FILEPATH } = require("../constants");
+const { updateCommands } = require("../constants/commands");
+const parseRegisters = require("./parseRegisters");
+const { REGISTRY_FILEPATH, REQUIREMENTS } = require("../constants/constants");
 
 const writeRegister = (newRegister) => {
   newRegister = newRegister.toString().trim();
 
-  const registers = registerLib.parseRegisters();
+  const registers = parseRegisters();
 
   if (!registers.includes(newRegister)) {
     fs.appendFileSync(REGISTRY_FILEPATH, "\n" + newRegister);
-    registerLib.updateAcceptableMessages();
+    updateCommands();
   }
 };
 
@@ -22,6 +23,7 @@ const deleteRegister = (registerToDelete) => {
 
   const newFile = dataRows.join("\n");
   fs.writeFileSync(REGISTRY_FILEPATH, newFile, { encoding: "utf-8" });
+  updateCommands();
 };
 
 const checkValidation = (newRegister) => {
@@ -33,12 +35,11 @@ const checkValidation = (newRegister) => {
   }
 
   // Returns the validation status of the new register
-  const requirements = registerLib.requirements(newRegister);
 
   const errorMessages = [];
 
-  for (const violationSet of requirements) {
-    const passes = violationSet.requirement.reduce(
+  REQUIREMENTS.forEach((violationSet) => {
+    const passes = violationSet(newRegister).requirement.reduce(
       (pass, current) => pass && current,
       true
     );
@@ -46,9 +47,14 @@ const checkValidation = (newRegister) => {
     if (!passes) {
       errorMessages.push(violationSet.violation);
     }
-  }
+  });
 
   return { isValid: errorMessages.length === 0, errorMessages };
 };
 
-module.exports = { writeRegister, checkValidation, deleteRegister };
+module.exports = {
+  writeRegister,
+  checkValidation,
+  parseRegisters,
+  deleteRegister,
+};

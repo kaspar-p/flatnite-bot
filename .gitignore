@@ -1,4 +1,3 @@
 /node_modules
+/auth
 .env
-ls.js
-cookies.js

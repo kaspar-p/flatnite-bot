@@ -1,30 +1,54 @@
 const chrome = require("selenium-webdriver/chrome");
+const childProcess = require("child_process");
 const { Builder, By } = require("selenium-webdriver");
-const localStorageData = require("./ls");
-const cookies = require("./cookies");
+const localStorageData = require("./auth/ls");
+const cookies = require("./auth/cookies");
+
+let binPath;
+try {
+  const chromedriver = require("chromedriver");
+  binPath = chromedriver.path;
+} catch (err) {
+  console.log(
+    "This operating system doesn't support chromedriver.\n" +
+      "Using custom-installed linux package."
+  );
+}
 
 let driver;
 
+const spinOffChromeDriverInstance = async () => {
+  childProcess.execFile(binPath, [], (err, stdout, stderr) => {
+    if (err || stderr) console.log("Chromedriver error: ", err, stderr);
+  });
+};
+
 const connectToSite = async () => {
   console.log("Begin connecting to website.");
-  driver = await new Builder()
-    .forBrowser("chrome")
-    .setChromeOptions(new chrome.Options().addArguments("--headless"))
-    .build();
+
+  if (process.platform == "linux") {
+    driver = await new Builder()
+      .forBrowser("chrome")
+      .setChromeOptions(new chrome.Options().addArguments("--headless"))
+      .build();
+  } else {
+    spinOffChromeDriverInstance();
+    driver = await new Builder().forBrowser("chrome").build();
+  }
 
   try {
     console.log("Creating first request to website.");
     await driver.get("http://surviv.io/#1111");
 
     console.log("Gotten first response.");
-    for (let object of cookies) {
+    for (const object of cookies) {
       const { name, value, domain } = object;
       await driver.manage().addCookie({ name, value, domain });
     }
 
     console.log("Done adding cookies.");
 
-    for (let key of Object.keys(localStorageData)) {
+    for (const key of Object.keys(localStorageData)) {
       await driver.executeScript(
         "localStorage.setItem(arguments[0],arguments[1])",
         key,
@@ -39,9 +63,9 @@ const connectToSite = async () => {
 
     console.log("Gotten second response.");
     await closeAllModals();
+    console.log("Done connecting. Ready for user-input.");
   } catch (error) {
     console.log("Error reached: ", error);
-    return;
   }
 };
 
@@ -51,7 +75,7 @@ const closeAllModals = async () => {
   try {
     visibleModals = await driver.findElements(
       By.xpath(
-        `//div[contains(@class, 'modal') and contains(@style, 'display: block')]`
+        "//div[contains(@class, 'modal') and contains(@style, 'display: block')]"
       )
     );
   } catch (error) {
@@ -71,7 +95,7 @@ const closeAllModals = async () => {
 
       visibleModals = await driver.findElements(
         By.xpath(
-          `//div[contains(@class, 'modal') and contains(@style, 'display: block')]`
+          "//div[contains(@class, 'modal') and contains(@style, 'display: block')]"
         )
       );
     } catch (error) {
@@ -81,7 +105,6 @@ const closeAllModals = async () => {
   }
 
   console.log("All modals closed.");
-  return;
 };
 
 const createTeam = async () => {
@@ -93,7 +116,6 @@ const createTeam = async () => {
     console.log("Team created.");
   } catch (error) {
     console.log("Error in creating team: ", error);
-    return;
   }
 };
 
@@ -106,7 +128,6 @@ const leaveTeam = async () => {
     console.log("Team left.");
   } catch (error) {
     console.log("Error in leaving team: ", error);
-    return;
   }
 };
 
@@ -116,7 +137,6 @@ const getLink = async () => {
     return url.toString();
   } catch (error) {
     console.log("Error in getting link: ", error);
-    return;
   }
 };
 
@@ -134,7 +154,6 @@ const handleUserInput = async () => {
     return link;
   } catch (error) {
     console.log("User input error reached: ", error);
-    return;
   }
 };
 

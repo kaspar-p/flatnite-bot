@@ -7,11 +7,12 @@
     "flatnite-bot": "node bot.js",
     "develop": "node bot.js --development",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "husky install"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "npm run test"
     }
   },
   "lint-staged": {
@@ -39,7 +40,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "husky": "^4.3.8",
+    "husky": "^5.1.1",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1"
   }

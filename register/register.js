@@ -3,8 +3,8 @@ const { updateCommands } = require("../constants/commands");
 const parseRegisters = require("./parseRegisters");
 const { REGISTRY_FILEPATH, REQUIREMENTS } = require("../constants/constants");
 
-const writeRegister = (newRegister) => {
-  newRegister = newRegister.toString().trim();
+const writeRegister = (uncleanRegister) => {
+  const newRegister = uncleanRegister.toString().trim();
 
   const registers = parseRegisters();
 

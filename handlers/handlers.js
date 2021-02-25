@@ -40,7 +40,7 @@ const crawlRequestHandler = async (client, msg) => {
 
 const helpHandler = async (client, msg) => {
   console.log("Help handler entered.");
-  let string = msg.content;
+  const string = msg.content;
   const argument = string.split(" ").length > 1 ? string.split(" ")[1] : null;
 
   console.log("Argument given: ", argument);

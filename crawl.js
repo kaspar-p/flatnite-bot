@@ -26,7 +26,7 @@ const spinOffChromeDriverInstance = async () => {
 const connectToSite = async () => {
   console.log("Begin connecting to website.");
 
-  if (process.platform == "linux") {
+  if (process.platform === "linux") {
     driver = await new Builder()
       .forBrowser("chrome")
       .setChromeOptions(new chrome.Options().addArguments("--headless"))

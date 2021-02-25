@@ -23,7 +23,7 @@ const REQUIRED_COMMANDS = {
 };
 
 const updateCommands = () => {
-  let newParsed = parseRegisters();
+  const newParsed = parseRegisters();
 
   // Delete everything within commands while keeping the same reference
   _.forEach(commands, (command, commandKey) => {

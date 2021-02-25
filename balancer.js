@@ -1,4 +1,4 @@
-let ready = false;
+const ready = false;
 
 const available = {
   ready,

@@ -15,12 +15,10 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix"
-    ],
-    "*.{css,js,json,md,applescript}": [
+    "*.{js,json,md}": [
       "prettier --write",
-      "npm run copyright"
+      "eslint --fix",
+      "echo \"Hello, World!\""
     ]
   },
   "author": "",

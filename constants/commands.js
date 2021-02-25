@@ -20,6 +20,12 @@ const REQUIRED_COMMANDS = {
       "Typing '.help' shows the list of all commands recognized by gamingbot!",
     helpSnippets: [".help <command>", ".help"],
   },
+  "@gaming_bot": {
+    command: "@gaming_bot",
+    helpText:
+      "Typing '@gaming_bot' asks the gamingbot to reply.",
+    helpSnippets: ["@gaming_bot <message>", "@gaming_bot"],
+  },
 };
 
 const updateCommands = () => {

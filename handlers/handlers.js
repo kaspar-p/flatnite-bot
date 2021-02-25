@@ -122,11 +122,20 @@ const deregisterHandler = async (client, msg) => {
   }
 };
 
+const chatHandler = (client, text) => {
+  fs.readFile(../chatbot/phraselist.txt, function(err, data){
+    var lines = data.split('\n');
+    sendMessage(client, lines[Math.floor(Math.random()*lines.length)]);
+ }
+
+};
+
 const handlerMap = {
   ".help": helpHandler,
   ".register": registerHandler,
   ".deregister": deregisterHandler,
   ".recognized-command": crawlRequestHandler,
+  "@gaming_bot": chatHandler,
 };
 
 module.exports = handlerMap;

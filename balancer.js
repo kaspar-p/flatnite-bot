@@ -1,7 +1,5 @@
-const ready = false;
-
 const available = {
-  ready,
+  ready: false,
 };
 
 const changeReadyStatus = (newStatus) => {

@@ -20,6 +20,18 @@ const REQUIRED_COMMANDS = {
       "Typing '.help' shows the list of all commands recognized by gamingbot!",
     helpSnippets: [".help <command>", ".help"],
   },
+  ".again": {
+    command: ".again",
+    helpText:
+      "Typing '.again <number-of-players>' will generate a new flatnite combination for you to try!",
+    helpSnippets: [".again <number-of-players>"],
+  },
+  ".dub": {
+    command: ".dub",
+    helpText:
+      "Typing '.dub <class1> <class2> <class3>' that combination to the datastore!",
+    helpSnippets: [".dub <class1> <class2> <class3>"],
+  },
 };
 
 const updateCommands = () => {

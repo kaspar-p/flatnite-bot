@@ -7,6 +7,8 @@ const CHANNEL = process.argv.includes("--development")
 
 const REGISTRY_FILEPATH = path.resolve("./register", "registers.txt");
 
+const CLASSES = ["demo", "tank", "scout", "medic", "assault", "sniper"];
+
 const REQUIREMENTS = [
   (newRegister) => ({
     requirement: [newRegister.length < 30],
@@ -49,4 +51,5 @@ module.exports = {
   CHANNEL,
   REGISTRY_FILEPATH,
   REQUIREMENTS,
+  CLASSES,
 };

@@ -1,29 +1,52 @@
 const fs = require("fs");
+const path = require("path");
+const _ = require("lodash");
 const { CLASSES } = require("../constants/constants");
 
 const filepathMap = new Map();
-filepathMap.set(2, "./data/kaspar-luke.txt");
-filepathMap.set(3, "./data/all-three.txt");
+filepathMap.set(2, path.resolve("./", "victory/", "data/", "kaspar-luke.txt"));
+filepathMap.set(3, path.resolve("./", "victory/", "data/", "all-three.txt"));
 
-const maximumCombinations = (n) => (n === 3 ? 56 : 15);
-const splitKey = (n) => (n === 3 ? "," : " + ");
+const maximumCombinations = (numPlayers) => {
+  const factorial = (n) => {
+    if (n === 1) return 1;
+    return n * factorial(n - 1);
+  };
 
-const makePermutations = (combination) => {
-  const permutations = [];
+  // Choose with repetition
+  return factorial(numPlayers + 6 - 1) / (factorial(numPlayers) * factorial(5));
+};
 
-  for (const c1 of combination) {
-    for (const c2 of combination) {
-      if (combination.length === 2) {
-        permutations.push([c1, c2]);
-      } else {
-        for (const c3 of combination) {
-          permutations.push([c1, c2, c3]);
-        }
-      }
+const permute = (list) => {
+  if (list.length === 1) {
+    return [[list[0]]];
+  } else {
+    const allPermutations = [];
+
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
+      const withoutItem = list.slice(0, i);
+      withoutItem.push(...list.slice(i + 1));
+
+      // Get the permutation of the rest of obj without sub and prepend sub
+      const permutations = permute(withoutItem);
+      const prepended = permutations.map((perm) => [item, ...perm]);
+      allPermutations.push(...prepended);
     }
-  }
 
-  return permutations;
+    return allPermutations;
+  }
+};
+
+const isIn = (set, combination) => {
+  let found = false;
+  set.forEach((elem) => {
+    if (_.isEqual(elem, combination)) {
+      found = true;
+    }
+  });
+
+  return found;
 };
 
 const getExistingCombinations = (numPlayers) => {
@@ -33,31 +56,32 @@ const getExistingCombinations = (numPlayers) => {
 
   const data = new Set(
     rawData
-      .split("\n")
       .trim()
+      .split("\n")
       .map((row) =>
         row
           .trim()
-          .split(splitKey(numPlayers))
+          .split(",")
           .map((type) => type.trim())
       )
   );
 
   let message;
-  if (data.length === maximumCombinations(numPlayers)) {
-    message = "All 56 combinations completed!";
+  const maxCombos = maximumCombinations(numPlayers);
+  if (data.length === maxCombos) {
+    message = `All ${maxCombos} combinations completed!`;
   } else {
-    message = `You have completed ${data.size} combinations!`;
+    message = `You have completed ${data.size}/${maxCombos} combinations!`;
   }
 
   const alreadyCompleted = new Set();
 
   // Add all combos and permutations of that combo to alreadyCompleted
   for (const row of data) {
-    const permutations = makePermutations(row);
+    const permutations = permute(row);
 
     for (const perm of permutations) {
-      alreadyCompleted.add(perm);
+      if (!isIn(alreadyCompleted, perm)) alreadyCompleted.add(perm);
     }
   }
 
@@ -65,14 +89,13 @@ const getExistingCombinations = (numPlayers) => {
 };
 
 const writeLine = (combination) => {
-  const numPlayers = combination.length;
-
-  const formattedCombination =
-    numPlayers === 2 ? combination.join(" + ") : combination.join(",");
-
-  fs.appendFileSync(filepathMap.get(numPlayers), formattedCombination, {
-    encoding: "utf-8",
-  });
+  fs.appendFileSync(
+    filepathMap.get(combination.length),
+    combination.join(",") + "\n",
+    {
+      encoding: "utf-8",
+    }
+  );
 };
 
 const createCombination = (numPlayers) => {
@@ -81,14 +104,25 @@ const createCombination = (numPlayers) => {
   const viableCombinations = new Set();
   for (const c1 of CLASSES) {
     for (const c2 of CLASSES) {
-      for (const c3 of CLASSES) {
-        const combination = [c1, c2, c3];
+      if (numPlayers === 2) {
+        const combination = [c1, c2];
 
         if (
-          !existingCombinations.has(combination) &&
-          !viableCombinations.has(combination)
+          !isIn(existingCombinations, combination) &&
+          !isIn(viableCombinations, combination)
         ) {
           viableCombinations.add(combination);
+        }
+      } else if (numPlayers === 3) {
+        for (const c3 of CLASSES) {
+          const combination = [c1, c2, c3];
+
+          if (
+            !isIn(existingCombinations, combination) &&
+            !isIn(viableCombinations, combination)
+          ) {
+            viableCombinations.add(combination);
+          }
         }
       }
     }
@@ -103,8 +137,7 @@ const writeCombination = (combination) => {
   const [existingCombinations] = getExistingCombinations(combination.length);
 
   let error;
-
-  if (existingCombinations.includes(combination)) {
+  if (isIn(existingCombinations, combination)) {
     error =
       "The combination was already in the datastore. Try something new, nub.";
   } else {

@@ -40,11 +40,8 @@ const crawlRequestHandler = async (client, msg) => {
 };
 
 const helpHandler = async (client, msg) => {
-  console.log("Help handler entered.");
   const string = msg.content;
   const argument = string.split(" ").length > 1 ? string.split(" ")[1] : null;
-
-  console.log("Argument given: ", argument);
 
   if (argument) {
     if (Object.keys(commands).includes(argument)) {
@@ -59,8 +56,6 @@ const helpHandler = async (client, msg) => {
       );
     }
   } else {
-    console.log(commands);
-
     const allHelpSnippets = [];
     _.forEach(commands, (commandObject) => {
       allHelpSnippets.push(...commandObject.helpSnippets);
@@ -85,8 +80,6 @@ const registerHandler = async (client, { content }) => {
     .map((e) => e.trim())
     .join(" ");
 
-  console.log("New register: ", newRegister);
-
   const validationReport = checkValidation(newRegister);
   if (validationReport.isValid) {
     writeRegister(newRegister);
@@ -107,24 +100,45 @@ const registerHandler = async (client, { content }) => {
 };
 
 const againHandler = async (client, msg) => {
-  const playerNumArg = !msg.content.split(" ")[1];
+  const playerNumArg = msg.content.split(" ")[1];
 
-  if (!playerNumArg || isNaN(playerNumArg)) {
+  if (!playerNumArg || isNaN(parseInt(playerNumArg))) {
     sendMessage(
       client,
       `Number of players input '${playerNumArg}' is not valid.`
     );
     return;
-  } else if (playerNumArg !== 2 || playerNumArg !== 3) {
+  }
+
+  const num = parseInt(playerNumArg);
+  if (num !== 2 && num !== 3) {
     sendMessage(client, `Number of players must be either 2 or 3!`);
     return;
   }
 
   // Send the user a new combination to try
-  const [newCombination, message] = createCombination(playerNumArg);
+  const [newCombination, message] = createCombination(num);
 
   sendMessage(client, message);
-  sendMessage(client, `Try this: ${newCombination.join(" + ")}`);
+
+  if (num === 3) {
+    sendMessage(
+      client,
+      `Try this: 
+        -> [6krill] player1: ${newCombination[0].toUpperCase()}
+        -> [6krill] player2: ${newCombination[1].toUpperCase()}
+        -> [6krill] player3: ${newCombination[2].toUpperCase()} 
+      `
+    );
+  } else {
+    sendMessage(
+      client,
+      `Try this:
+        -> [6krill] player1: ${newCombination[0].toUpperCase()}
+        -> [6krill] player2: ${newCombination[1].toUpperCase()}
+      `
+    );
+  }
 };
 
 const victoryHandler = async (client, msg) => {
@@ -142,11 +156,10 @@ const victoryHandler = async (client, msg) => {
       validClasses = false;
     }
   });
-
   if (!validClasses) return;
 
-  if (classArgs.length !== 2 || classArgs.length !== 3) {
-    sendMessage("There must be exactly two or three classes in a dub!");
+  if (classArgs.length !== 2 && classArgs.length !== 3) {
+    sendMessage(client, "There must be exactly two or three classes in a dub!");
     return;
   }
 

@@ -15,4 +15,4 @@ scout,scout,scout
 assault,assault,scout
 assault,assault,medic
 assault,assault,tank
-assault,assaut,assault
+assault,assault,assault

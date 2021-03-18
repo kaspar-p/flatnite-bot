@@ -1,2 +1,2 @@
-scout + sniper
-tank + assault
+scout,sniper
+tank,assault

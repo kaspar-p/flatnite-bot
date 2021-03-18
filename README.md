@@ -10,9 +10,9 @@ There are three ignored files, for security:
 - `/auth/cookies.js` is an array of objects, each of which has `name`, `value`, and `domain` keys. The three cookies for authentication MUST BE `__cfduid`, `app-sid` and `app-data`. Be sure to copy these from an authenticated Surviv.io account.
 - `.env` is the configuration information for a certain discord server. The discord bot's `BOT_TOKEN` and the desired `CHANNEL_ID` live here, as well as an optional `TEST_CHANNEL_ID` for development.
 
-The system is currently tuned for linux, but any regular PC can use this by installing the npm `chromedriver` package and using that, rather than the native chromedriver currently used.
+The system is currently tuned for Linux, but any regular PC can use this by installing the npm `chromedriver` package and using that, rather than the native chromedriver currently used.
 
-This works well on @kaspar-p's mac and linux machines. Please open an issue if setup is failing with a different configuration.
+This works well on the author's Mac and Linux machines. Please open an issue if setup is failing with a different configuration.
 
 Once all that is resolved, just run `npm install && npm run flatnite-bot`! Then, the next time someone says "gaming" in the desired channel, the bot will create a lobby and send the corresponding link.
 

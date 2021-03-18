@@ -1,11 +1,17 @@
 require("dotenv").config();
 const path = require("path");
 
-const CHANNEL = process.argv.includes("--development")
-  ? process.env.TEST_CHANNEL_ID
-  : process.env.CHANNEL_ID;
+const DEVELOP = "DEVELOP";
+const PRODUCTION = "PRODUCTION";
+
+const MODE = process.argv.includes("--development") ? DEVELOP : PRODUCTION;
+
+const CHANNEL =
+  MODE === DEVELOP ? process.env.TEST_CHANNEL_ID : process.env.CHANNEL_ID;
 
 const REGISTRY_FILEPATH = path.resolve("./register", "registers.txt");
+
+const CLASSES = ["demo", "tank", "scout", "medic", "assault", "sniper"];
 
 const REQUIREMENTS = [
   (newRegister) => ({
@@ -46,7 +52,11 @@ const REQUIREMENTS = [
 ];
 
 module.exports = {
+  DEVELOP,
+  PRODUCTION,
+  MODE,
   CHANNEL,
   REGISTRY_FILEPATH,
   REQUIREMENTS,
+  CLASSES,
 };

@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "flatnite-bot": "node bot.js",
-    "develop": "node bot.js --development",
+    "develop": "nodemon bot.js --development",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint",
+    "lint": "eslint ./",
+    "lint:fix": "eslint --fix ./",
     "postinstall": "husky install"
   },
   "husky": {

@@ -16,7 +16,9 @@ const handleMessage = async (client, msg) => {
   if (matchedCommand) {
     if (!matchedCommand.startsWith(".")) matchedCommand = ".recognized-command";
     if (available.ready) {
+      available.changeReadyStatus(false);
       await handlerMap[matchedCommand](client, msg);
+      available.changeReadyStatus(true);
     } else {
       sendMessage(
         client,

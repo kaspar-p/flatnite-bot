@@ -3,11 +3,11 @@ const Discord = require("discord.js");
 const scheduler = require("node-schedule");
 
 const client = new Discord.Client();
-const { connectToSite, getOtherMode } = require("./crawl");
+const { connectToSite } = require("./crawl");
 const handleMessages = require("./handlers/messageHandler");
-const sendMessage = require("./sendMessage");
 const available = require("./balancer");
 const { MODE, PRODUCTION } = require("./constants/constants");
+const sendMode = require("./senders/sendMode");
 
 client.on("ready", async () => {
   console.log("Successfully connected to discord server.");
@@ -28,7 +28,10 @@ client.login(process.env.BOT_TOKEN);
 // Every day at noon
 scheduler.scheduleJob("00 12 * * *", async () => {
   if (available.ready) {
-    const otherMode = await getOtherMode();
-    sendMessage(client, `The mode today is: ${otherMode}`);
+    sendMode(client);
+
+    // If the bot is busy, wait 30 seconds and send again
+    // There is almost no chance that the bot is STILL busy
+    setTimeout(() => sendMode(client), 30 * 1000);
   }
 });

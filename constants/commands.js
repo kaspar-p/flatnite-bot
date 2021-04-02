@@ -29,8 +29,13 @@ const REQUIRED_COMMANDS = {
   ".dub": {
     command: ".dub",
     helpText:
-      "Typing '.dub <class1> <class2> <class3>' that combination to the datastore!",
+      "Typing '.dub <class1> <class2> <class3>' stores that combination to the datastore!",
     helpSnippets: [".dub <class1> <class2> <class3>"],
+  },
+  ".mode": {
+    command: ".mode",
+    helpText: "Typing '.mode' tells you the special mode for today!",
+    helpSnippets: [".mode"],
   },
 };
 

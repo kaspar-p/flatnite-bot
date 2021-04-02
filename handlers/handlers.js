@@ -8,7 +8,8 @@ const {
   deleteRegister,
   checkValidation,
 } = require("../register/register");
-const sendMessage = require("../sendMessage");
+const sendMessage = require("../senders/sendMessage");
+const sendMode = require("../senders/sendMode");
 const { writeCombination, createCombination } = require("../victory/lib");
 
 const crawlRequestHandler = async (client, msg) => {
@@ -16,22 +17,14 @@ const crawlRequestHandler = async (client, msg) => {
   const rightMessage = msg.content in commands;
 
   if (rightChannel && rightMessage) {
-    if (available.ready) {
-      available.changeReadyStatus(false);
+    available.changeReadyStatus(false);
 
-      // Create a flatnite lobby and send the link
-      sendMessage(client, "Get in here nerds: ");
-      const link = await handleUserInput();
-      sendMessage(client, link);
+    // Create a flatnite lobby and send the link
+    sendMessage(client, "Get in here nerds: ");
+    const link = await handleUserInput();
+    sendMessage(client, link);
 
-      available.changeReadyStatus(true);
-    } else {
-      sendMessage(
-        client,
-        "Bot is working hard with tears streaming down its face.\n" +
-          "Please wait a few minutes for the bot to be ready for gaming."
-      );
-    }
+    available.changeReadyStatus(true);
   }
 };
 
@@ -61,6 +54,10 @@ const helpHandler = async (client, msg) => {
 
     sendMessage(client, `Available commands:\n${formatted}`);
   }
+};
+
+const modeHandler = async (client) => {
+  await sendMode(client);
 };
 
 const registerHandler = async (client, { content }) => {
@@ -191,6 +188,7 @@ const handlerMap = {
   ".deregister": deregisterHandler,
   ".dub": victoryHandler,
   ".again": againHandler,
+  ".mode": modeHandler,
   ".recognized-command": crawlRequestHandler,
 };
 

@@ -157,4 +157,26 @@ const handleUserInput = async () => {
   }
 };
 
-module.exports = { connectToSite, handleUserInput };
+const getOtherMode = async () => {
+  // Assumes that the starting point is at the main menu
+  console.log("Getting other mode.");
+  try {
+    const modeButton = await driver.findElement(By.id("btn-change-mode"));
+    await modeButton.click();
+
+    const secondOption = await driver.findElement(By.id("1"));
+    const modeText = await secondOption.getText();
+
+    await secondOption.click();
+
+    const typeText = await driver
+      .findElement(By.id("index-play-type-selected"))
+      .getText();
+
+    return modeText.toUpperCase() + " " + typeText.toUpperCase();
+  } catch (error) {
+    console.log("Error getting other mode: ", error);
+  }
+};
+
+module.exports = { getOtherMode, connectToSite, handleUserInput };

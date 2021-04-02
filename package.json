@@ -33,6 +33,7 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "lodash": "^4.17.20",
+    "node-schedule": "^2.0.0",
     "selenium-webdriver": "^4.0.0-alpha.8"
   },
   "devDependencies": {

@@ -8,12 +8,8 @@ const {
   deleteRegister,
   checkValidation,
 } = require("../register/register");
+const sendMessage = require("../sendMessage");
 const { writeCombination, createCombination } = require("../victory/lib");
-
-const sendMessage = (client, text) => {
-  const channel = client.channels.cache.get(CHANNEL);
-  channel.send(text);
-};
 
 const crawlRequestHandler = async (client, msg) => {
   const rightChannel = msg.channel.id === CHANNEL;
@@ -198,4 +194,4 @@ const handlerMap = {
   ".recognized-command": crawlRequestHandler,
 };
 
-module.exports = handlerMap;
+module.exports = { handlerMap, sendMessage };

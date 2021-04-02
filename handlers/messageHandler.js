@@ -1,5 +1,5 @@
 const { commands } = require("../constants/commands");
-const handlers = require("./handlers");
+const { handlerMap } = require("./handlers");
 
 const handleMessage = async (client, msg) => {
   let matchedCommand;
@@ -13,7 +13,7 @@ const handleMessage = async (client, msg) => {
 
   if (matchedCommand) {
     if (!matchedCommand.startsWith(".")) matchedCommand = ".recognized-command";
-    await handlers[matchedCommand](client, msg);
+    await handlerMap[matchedCommand](client, msg);
   }
 };
 

@@ -26,7 +26,7 @@ client.on("message", async (msg) => {
 client.login(process.env.BOT_TOKEN);
 
 // Every day at noon
-scheduler.scheduleJob("00 12 * * *", async () => {
+scheduler.scheduleJob("00 14 * * *", async () => {
   if (available.ready) {
     await refreshSite();
     await sendMode(client);

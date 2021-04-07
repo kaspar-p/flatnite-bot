@@ -30,7 +30,7 @@ scheduler.scheduleJob("00 12 * * *", async () => {
   if (available.ready) {
     await refreshSite();
     await sendMode(client);
-
+  } else {
     // If the bot is busy, wait 30 seconds and send again
     // There is almost no chance that the bot is STILL busy
     setTimeout(() => sendMode(client), 30 * 1000);

@@ -140,6 +140,21 @@ const getLink = async () => {
   }
 };
 
+const refreshSite = async () => {
+  try {
+    for (const key of Object.keys(localStorageData)) {
+      await driver.executeScript(
+        "localStorage.setItem(arguments[0],arguments[1])",
+        key,
+        localStorageData[key]
+      );
+    }
+    await driver.get("https://surviv.io/#1111");
+  } catch (error) {
+    console.log("Error refreshing site: ", error);
+  }
+};
+
 const handleUserInput = async () => {
   try {
     console.log("-- Begin handling user input --");
@@ -179,4 +194,4 @@ const getOtherMode = async () => {
   }
 };
 
-module.exports = { getOtherMode, connectToSite, handleUserInput };
+module.exports = { getOtherMode, connectToSite, handleUserInput, refreshSite };

@@ -7,19 +7,17 @@
     "flatnite-bot": "node bot.js",
     "develop": "nodemon bot.js --development",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ./",
     "lint:fix": "eslint --fix ./",
     "postinstall": "husky install"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test"
+      "pre-commit": "npm run test && npm run lint:fix"
     }
   },
   "lint-staged": {
     "*.js": [
-      "prettier --write",
-      "npm run lint -- --fix "
+      "prettier --write"
     ]
   },
   "author": "",

@@ -6,13 +6,13 @@ const client = new Discord.Client();
 const { connectToSite, refreshSite } = require("./crawl");
 const handleMessages = require("./handlers/messageHandler");
 const available = require("./balancer");
-const { MODE, PRODUCTION } = require("./constants/constants");
+const { MODE } = require("./constants/constants");
 const sendMode = require("./senders/sendMode");
 
 client.on("ready", async () => {
   console.log("Successfully connected to discord server.");
 
-  if (MODE === PRODUCTION) {
+  if (MODE.PRODUCTION) {
     // Begin accessing surviv.io
     await connectToSite();
     available.changeReadyStatus(true);

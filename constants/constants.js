@@ -1,13 +1,14 @@
 require("dotenv").config();
 const path = require("path");
 
-const DEVELOP = "DEVELOP";
-const PRODUCTION = "PRODUCTION";
+const MODE = {
+  PRODUCTION: !process.argv.includes("--development"),
+  DEVELOP: process.argv.includes("--development"),
+};
 
-const MODE = process.argv.includes("--development") ? DEVELOP : PRODUCTION;
-
-const CHANNEL =
-  MODE === DEVELOP ? process.env.TEST_CHANNEL_ID : process.env.CHANNEL_ID;
+const CHANNEL = MODE.DEVELOP
+  ? process.env.TEST_CHANNEL_ID
+  : process.env.CHANNEL_ID;
 
 const REGISTRY_FILEPATH = path.resolve("./register", "registers.txt");
 
@@ -52,8 +53,6 @@ const REQUIREMENTS = [
 ];
 
 module.exports = {
-  DEVELOP,
-  PRODUCTION,
   MODE,
   CHANNEL,
   REGISTRY_FILEPATH,

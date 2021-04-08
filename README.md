@@ -1,6 +1,6 @@
 # flatnite-bot
 
-A Surviv.io helpbot. Send lobby links, records cobalt win combinations, and is cute.
+A surviv.io helpbot. Sends lobby links, records cobalt win combinations, and is cute.
 
 ## How to use it
 

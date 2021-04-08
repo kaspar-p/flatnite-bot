@@ -1,7 +1,7 @@
 const available = require("../balancer");
 const { commands } = require("../constants/commands");
 const { handlerMap } = require("./handlers");
-const sendMessage = require("../senders/sendMessage");
+const { sendMessage } = require("../message");
 
 const handleMessage = async (client, msg) => {
   let matchedCommand;

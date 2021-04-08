@@ -1,15 +1,13 @@
 const _ = require("lodash");
 const { commands } = require("../constants/commands");
 const { handleUserInput } = require("../crawl");
-const available = require("../balancer");
 const { CHANNEL, CLASSES } = require("../constants/constants");
 const {
   writeRegister,
   deleteRegister,
   checkValidation,
 } = require("../register/register");
-const sendMessage = require("../senders/sendMessage");
-const sendMode = require("../senders/sendMode");
+const { sendMode, sendMessage, addMessageContent } = require("../message");
 const { writeCombination, createCombination } = require("../victory/lib");
 
 const crawlRequestHandler = async (client, msg) => {
@@ -17,14 +15,10 @@ const crawlRequestHandler = async (client, msg) => {
   const rightMessage = msg.content in commands;
 
   if (rightChannel && rightMessage) {
-    available.changeReadyStatus(false);
-
     // Create a flatnite lobby and send the link
-    sendMessage(client, "Get in here nerds: ");
+    const message = await sendMessage(client, "Get in here nerds: ");
     const link = await handleUserInput();
-    sendMessage(client, link);
-
-    available.changeReadyStatus(true);
+    await addMessageContent(message, link);
   }
 };
 

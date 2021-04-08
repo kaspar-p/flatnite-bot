@@ -4,7 +4,7 @@ const _ = require("lodash");
 const { CLASSES } = require("../constants/constants");
 
 const filepathMap = new Map();
-filepathMap.set(2, path.resolve("./", "victory/", "data/", "kaspar-luke.txt"));
+filepathMap.set(2, path.resolve("./", "victory/", "data/", "kaspar-evan.txt"));
 filepathMap.set(3, path.resolve("./", "victory/", "data/", "all-three.txt"));
 
 const maximumCombinations = (numPlayers) => {

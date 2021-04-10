@@ -12,7 +12,7 @@ const { sendMode } = require("./message");
 client.on("ready", async () => {
   console.log("Successfully connected to discord server.");
 
-  if (MODE.PRODUCTION) {
+  if (MODE.PRODUCTION || MODE.DEVELOP_WEB) {
     // Begin accessing surviv.io
     await connectToSite();
   }

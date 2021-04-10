@@ -37,6 +37,11 @@ const REQUIRED_COMMANDS = {
     helpText: "Typing '.mode' tells you the special mode for today!",
     helpSnippets: [".mode"],
   },
+  ".refresh": {
+    command: ".refresh",
+    helpText: "Typing '.refresh' refreshes the page (for debugging)!",
+    helpSnippets: [".refresh"],
+  },
 };
 
 const updateCommands = () => {

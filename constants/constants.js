@@ -3,8 +3,10 @@ const path = require("path");
 
 const MODE = {
   PRODUCTION: !process.argv.includes("--development"),
-  DEVELOP: process.argv.includes("--development"),
+  DEVELOP_WEB: process.argv.includes("--develop-web"),
+  DEVELOP_MSG: process.argv.includes("--develop-msg"),
 };
+MODE.DEVELOP = MODE.DEVELOP_MSG || MODE.DEVELOP_WEB;
 
 const CHANNEL = MODE.DEVELOP
   ? process.env.TEST_CHANNEL_ID

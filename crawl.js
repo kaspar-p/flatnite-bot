@@ -142,14 +142,7 @@ const getLink = async () => {
 
 const refreshSite = async () => {
   try {
-    for (const key of Object.keys(localStorageData)) {
-      await driver.executeScript(
-        "localStorage.setItem(arguments[0],arguments[1])",
-        key,
-        localStorageData[key]
-      );
-    }
-    await driver.get("https://surviv.io/#1111");
+    await driver.get("http://surviv.io/#1111");
   } catch (error) {
     console.log("Error refreshing site: ", error);
   }

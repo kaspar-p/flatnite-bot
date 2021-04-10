@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "flatnite-bot": "node bot.js",
-    "develop": "nodemon bot.js --development",
+    "develop-msg": "nodemon bot.js --develop-msg",
+    "develop-web": "nodemon bot.js --develop-web",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:fix": "eslint --fix ./",
     "postinstall": "husky install"

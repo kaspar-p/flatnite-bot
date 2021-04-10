@@ -1,6 +1,6 @@
 const _ = require("lodash");
 const { commands } = require("../constants/commands");
-const { handleUserInput } = require("../crawl");
+const { handleUserInput, refreshSite } = require("../crawl");
 const { CHANNEL, CLASSES } = require("../constants/constants");
 const {
   writeRegister,
@@ -48,6 +48,11 @@ const helpHandler = async (client, msg) => {
 
     sendMessage(client, `Available commands:\n${formatted}`);
   }
+};
+
+const refreshHandler = async (client) => {
+  await sendMessage(client, "Refreshing...");
+  await refreshSite();
 };
 
 const modeHandler = async (client) => {
@@ -183,6 +188,7 @@ const handlerMap = {
   ".dub": victoryHandler,
   ".again": againHandler,
   ".mode": modeHandler,
+  ".refresh": refreshHandler,
   ".recognized-command": crawlRequestHandler,
 };
 

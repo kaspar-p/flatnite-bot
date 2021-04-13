@@ -8,7 +8,12 @@ const {
   checkValidation,
 } = require("../register/register");
 const { sendMode, sendMessage, addMessageContent } = require("../message");
-const { writeCombination, createCombination } = require("../victory/lib");
+const {
+  writeCombination,
+  createCombination,
+  getExistingCombinations,
+  isIn,
+} = require("../victory/lib");
 
 const crawlRequestHandler = async (client, msg) => {
   const rightChannel = msg.channel.id === CHANNEL;
@@ -47,6 +52,33 @@ const helpHandler = async (client, msg) => {
     const formatted = allHelpSnippets.map((e) => `-> ${e}`).join("\n");
 
     sendMessage(client, `Available commands:\n${formatted}`);
+  }
+};
+
+const queryHandler = async (client, msg) => {
+  // This is a little susceptible to empty strings
+  const num = msg.content.split(" ").length - 1;
+  if (num !== 2 && num !== 3) {
+    sendMessage(client, `Number of players must be either 2 or 3!`);
+    return;
+  }
+
+  const combination = msg.content.split(" ").slice(1);
+
+  for (const c of combination) {
+    if (!CLASSES.includes(c)) {
+      sendMessage(client, `Class '${c}' is not valid.`);
+      return;
+    }
+  }
+
+  // Send the user a new combination to try
+  const [alreadyCompleted] = getExistingCombinations(num);
+
+  if (isIn(alreadyCompleted, combination)) {
+    sendMessage(client, `You have won with this combination before.`);
+  } else {
+    sendMessage(client, `You have NOT won with this combination before.`);
   }
 };
 
@@ -189,6 +221,7 @@ const handlerMap = {
   ".again": againHandler,
   ".mode": modeHandler,
   ".refresh": refreshHandler,
+  ".query": queryHandler,
   ".recognized-command": crawlRequestHandler,
 };
 

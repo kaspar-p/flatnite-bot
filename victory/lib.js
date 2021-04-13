@@ -150,4 +150,6 @@ const writeCombination = (combination) => {
 module.exports = {
   writeCombination,
   createCombination,
+  getExistingCombinations,
+  isIn,
 };

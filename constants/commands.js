@@ -42,6 +42,12 @@ const REQUIRED_COMMANDS = {
     helpText: "Typing '.refresh' refreshes the page (for debugging)!",
     helpSnippets: [".refresh"],
   },
+  ".query": {
+    command: ".query",
+    helpText:
+      "Typing '.query <class1> <class2> <class3>' tells you whether or not that combination has already been completed!",
+    helpSnippets: [".query <class1> <class2> <class3>"],
+  },
 };
 
 const updateCommands = () => {

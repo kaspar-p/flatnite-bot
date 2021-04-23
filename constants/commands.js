@@ -75,5 +75,6 @@ const updateCommands = () => {
 
 const commands = _.cloneDeep(REQUIRED_COMMANDS);
 updateCommands();
+console.log("all commands: ", commands);
 
 module.exports = { commands, updateCommands };

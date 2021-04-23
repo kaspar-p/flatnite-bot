@@ -8,7 +8,7 @@ const parseRegisters = () => {
   data.split("\n").forEach((row) => {
     const value = row.trim();
 
-    if (!registers.includes(value)) registers.push(value);
+    if (!registers.includes(value) && value) registers.push(value);
   });
 
   return registers;

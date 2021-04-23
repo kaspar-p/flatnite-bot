@@ -52,6 +52,10 @@ const REQUIREMENTS = [
     ],
     violation: "New command cannot contain control commands!",
   }),
+  (newRegister) => ({
+    requirement: [!newRegister.includes(".")],
+    violation: "New command cannot contain periods!",
+  }),
 ];
 
 module.exports = {

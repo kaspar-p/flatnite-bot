@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { updateCommands } = require("../constants/commands");
+const { commands, updateCommands } = require("../constants/commands");
 const parseRegisters = require("./parseRegisters");
 const { REGISTRY_FILEPATH, REQUIREMENTS } = require("../constants/constants");
 
@@ -39,15 +39,20 @@ const checkValidation = (newRegister) => {
   const errorMessages = [];
 
   REQUIREMENTS.forEach((violationSet) => {
-    const passes = violationSet(newRegister).requirement.reduce(
+    const test = violationSet(newRegister);
+    const passes = test.requirement.reduce(
       (pass, current) => pass && current,
       true
     );
 
     if (!passes) {
-      errorMessages.push(violationSet.violation);
+      errorMessages.push(test.violation);
     }
   });
+
+  if (commands.length >= 50) {
+    errorMessages.push("There cannot be more than 50 commands!");
+  }
 
   return { isValid: errorMessages.length === 0, errorMessages };
 };

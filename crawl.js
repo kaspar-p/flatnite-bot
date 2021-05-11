@@ -135,7 +135,7 @@ const leaveTeam = async () => {
 
 const getLink = async () => {
   try {
-    await driver.sleep(5000);
+    await driver.sleep(2000);
     const url = await driver.getCurrentUrl();
 
     return url.toString();

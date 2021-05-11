@@ -2,3 +2,5 @@
 /auth
 .env
 /register/registers.txt
+/victory/data/
+/analysis

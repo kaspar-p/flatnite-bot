@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const fs = require("fs");
 const { commands } = require("../constants/commands");
 const { handleUserInput, refreshSite } = require("../crawl");
 const { CHANNEL, CLASSES } = require("../constants/constants");
@@ -213,6 +214,18 @@ const deregisterHandler = async (client, msg) => {
   }
 };
 
+const howManyHandler = async (client) => {
+  const data = fs.readFileSync("../analysis/data/times.txt", {
+    encoding: "utf-8",
+  });
+  const number = parseInt(data.toString().trim());
+
+  sendMessage(
+    client,
+    `Gamingbot has done ${number} rounds of statistical analysis`
+  );
+};
+
 const handlerMap = {
   ".help": helpHandler,
   ".register": registerHandler,
@@ -222,6 +235,7 @@ const handlerMap = {
   ".mode": modeHandler,
   ".refresh": refreshHandler,
   ".query": queryHandler,
+  ".how-many": howManyHandler,
   ".recognized-command": crawlRequestHandler,
 };
 

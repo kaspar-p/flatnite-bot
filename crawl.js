@@ -1,6 +1,6 @@
 const chrome = require("selenium-webdriver/chrome");
 const childProcess = require("child_process");
-const { Builder, By } = require("selenium-webdriver");
+const { until, Builder, By } = require("selenium-webdriver");
 const localStorageData = require("./auth/ls");
 const cookies = require("./auth/cookies");
 
@@ -123,7 +123,9 @@ const leaveTeam = async () => {
   try {
     // Assume that the bot is already sitting in a created team
     const leaveTeamButton = await driver.findElement(By.id("btn-team-leave"));
-    await leaveTeamButton.click();
+
+    await driver.wait(await until.elementIsEnabled(leaveTeamButton), 15000);
+    await driver.executeScript("arguments[0].click();", leaveTeamButton);
 
     console.log("Team left.");
   } catch (error) {
@@ -133,7 +135,9 @@ const leaveTeam = async () => {
 
 const getLink = async () => {
   try {
+    await driver.sleep(5000);
     const url = await driver.getCurrentUrl();
+
     return url.toString();
   } catch (error) {
     console.log("Error in getting link: ", error);
@@ -150,15 +154,14 @@ const refreshSite = async () => {
 
 const handleUserInput = async () => {
   try {
-    console.log("-- Begin handling user input --");
+    // console.log("-- Begin handling user input --");
 
     await createTeam();
-    await driver.sleep(1000);
     const link = await getLink();
-    console.log("Link gotten: ", link);
+    // console.log("Link gotten: ", link);
     await leaveTeam();
 
-    console.log("-- Finished handling user input --");
+    // console.log("-- Finished handling user input --");
     return link;
   } catch (error) {
     console.log("User input error reached: ", error);

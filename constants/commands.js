@@ -48,6 +48,12 @@ const REQUIRED_COMMANDS = {
       "Typing '.query <class1> <class2> <class3>' tells you whether or not that combination has already been completed!",
     helpSnippets: [".query <class1> <class2> <class3>"],
   },
+  ".how-many": {
+    command: ".how-many",
+    helpText:
+      "Typing '.how-many' will tells you how many runs of statistical analysis gamingbot has done!",
+    helpSnippets: [".how-many"],
+  },
 };
 
 const updateCommands = () => {

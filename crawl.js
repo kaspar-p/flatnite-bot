@@ -69,35 +69,35 @@ const connectToSite = async () => {
   }
 };
 
+const getOpenModals = async () => {
+  return await driver.findElements(
+    By.xpath(
+      "//div[contains(@class, 'modal') and contains(@style, 'display: block')]"
+    )
+  );
+};
+
 const closeAllModals = async () => {
   // Click through all promotional modals
   let visibleModals;
   try {
-    visibleModals = await driver.findElements(
-      By.xpath(
-        "//div[contains(@class, 'modal') and contains(@style, 'display: block')]"
-      )
-    );
+    visibleModals = await getOpenModals();
   } catch (error) {
     console.log("Error reached in finding modals to close: ", error);
     return;
   }
 
   while (visibleModals.length > 0) {
-    console.log("Open modals found: ", visibleModals);
+    console.log("Open modals found: ", visibleModals.length);
     try {
-      const link = await visibleModals[0].findElement(By.css(".close"));
+      const link = await visibleModals.pop().findElement(By.css(".close"));
 
       await driver.executeScript("arguments[0].click();", link);
-      await driver.sleep(1000);
+      await driver.sleep(3000);
 
       console.log("Modal closed.");
 
-      visibleModals = await driver.findElements(
-        By.xpath(
-          "//div[contains(@class, 'modal') and contains(@style, 'display: block')]"
-        )
-      );
+      visibleModals = await getOpenModals();
     } catch (error) {
       console.log("Error encountered while closing modal: ", error);
       break;

@@ -62,8 +62,8 @@ const getExistingCombinations = (numPlayers) => {
         row
           .trim()
           .split(",")
-          .map((type) => type.trim())
-      )
+          .map((type) => type.trim()),
+      ),
   );
 
   let message;
@@ -94,7 +94,7 @@ const writeLine = (combination) => {
     combination.join(",") + "\n",
     {
       encoding: "utf-8",
-    }
+    },
   );
 };
 

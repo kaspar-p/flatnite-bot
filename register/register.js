@@ -42,7 +42,7 @@ const checkValidation = (newRegister) => {
     const test = violationSet(newRegister);
     const passes = test.requirement.reduce(
       (pass, current) => pass && current,
-      true
+      true,
     );
 
     if (!passes) {

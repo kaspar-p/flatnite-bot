@@ -20,7 +20,8 @@
     "prefer-const": "error",
     "no-param-reassign": "error",
     "no-self-compare": "error",
-    "no-var": "error"
+    "no-var": "error",
+    "comma-dangle": ["error", "always-multiline"]
   },
   "ignorePatterns": "auth/"
 }

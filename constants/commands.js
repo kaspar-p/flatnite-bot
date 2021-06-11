@@ -54,6 +54,11 @@ const REQUIRED_COMMANDS = {
       "Typing '.how-many' will tells you how many runs of statistical analysis gamingbot has done!",
     helpSnippets: [".how-many"],
   },
+  ".speak": {
+    command: ".speak",
+    helpText: "Typing '.speak' will make gamingbot go absolutely ham nuts.",
+    helpSnippets: [".speak"],
+  },
 };
 
 const updateCommands = () => {

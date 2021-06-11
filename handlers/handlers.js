@@ -37,12 +37,12 @@ const helpHandler = async (client, msg) => {
     if (Object.keys(commands).includes(argument)) {
       sendMessage(
         client,
-        `Command: '${argument}' -> ${commands[argument].helpText}`,
+        `Command: '${argument}' -> ${commands[argument].helpText}`
       );
     } else {
       sendMessage(
         client,
-        "Unknown command! Try '.help' with no arguments to learn all recognized commands!",
+        "Unknown command! Try '.help' with no arguments to learn all recognized commands!"
       );
     }
   } else {
@@ -111,7 +111,7 @@ const registerHandler = async (client, { content }) => {
     writeRegister(newRegister);
     sendMessage(
       client,
-      `Command: '${newRegister}' registered for a gamers' use.`,
+      `Command: '${newRegister}' registered for a gamers' use.`
     );
   } else {
     sendMessage(
@@ -120,7 +120,7 @@ const registerHandler = async (client, { content }) => {
         validationReport.errorMessages.length
       } errors returned: \n${validationReport.errorMessages
         .map((errorText) => `-> ${errorText}`)
-        .join("\n")}`,
+        .join("\n")}`
     );
   }
 };
@@ -131,7 +131,7 @@ const againHandler = async (client, msg) => {
   if (!playerNumArg || isNaN(parseInt(playerNumArg))) {
     sendMessage(
       client,
-      `Number of players input '${playerNumArg}' is not valid.`,
+      `Number of players input '${playerNumArg}' is not valid.`
     );
     return;
   }
@@ -154,7 +154,7 @@ const againHandler = async (client, msg) => {
         -> [6krill] player1: ${newCombination[0].toUpperCase()}
         -> [6krill] player2: ${newCombination[1].toUpperCase()}
         -> [6krill] player3: ${newCombination[2].toUpperCase()} 
-      `,
+      `
     );
   } else {
     sendMessage(
@@ -162,7 +162,7 @@ const againHandler = async (client, msg) => {
       `Try this:
         -> [6krill] player1: ${newCombination[0].toUpperCase()}
         -> [6krill] player2: ${newCombination[1].toUpperCase()}
-      `,
+      `
     );
   }
 };
@@ -265,7 +265,7 @@ const howManyHandler = async (client) => {
       `Links of length 1  :::  ${numOne} / ${links.length} = ${onePercentage}\n` +
       `Links of length 2  :::  ${numTwo} / ${links.length} = ${twoPercentage}\n` +
       `Links of length 3  :::  ${numThree} / ${links.length} = ${threePercentage}\n` +
-      `Links of length 4  :::  ${numFour} / ${links.length} = ${fourPercentage}`,
+      `Links of length 4  :::  ${numFour} / ${links.length} = ${fourPercentage}`
   );
 };
 

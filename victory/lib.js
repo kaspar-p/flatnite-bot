@@ -17,6 +17,11 @@ const maximumCombinations = (numPlayers) => {
   return factorial(numPlayers + 6 - 1) / (factorial(numPlayers) * factorial(5));
 };
 
+/**
+ * Returns an array of all possible permutations of @param list
+ * @param {Array} list classes to permute
+ * @returns {Array} A list of lists, with each sublist being a permutation of @param list
+ */
 const permute = (list) => {
   if (list.length === 1) {
     return [[list[0]]];
@@ -38,6 +43,12 @@ const permute = (list) => {
   }
 };
 
+/**
+ * Determines whether an array of strings (a combination) is in a set of combinations
+ * @param {Set} set
+ * @param {Array} combination
+ * @returns
+ */
 const isIn = (set, combination) => {
   let found = false;
   set.forEach((elem) => {
@@ -49,12 +60,52 @@ const isIn = (set, combination) => {
   return found;
 };
 
-const getExistingCombinations = (numPlayers) => {
-  const rawData = fs.readFileSync(filepathMap.get(numPlayers), {
-    encoding: "utf-8",
-  });
+/**
+ * Computes all possible combinations for a number of players
+ * @param {Number} numPlayers
+ * @returns
+ */
+const createAllCombinations = (numPlayers) => {
+  const combos = new Set();
+  if (numPlayers === 1) {
+    for (const c of CLASSES) combos.add([c]);
+  } else {
+    const combosBelow = createAllCombinations(numPlayers - 1);
 
-  const data = new Set(
+    // Add new combinations to combos
+    combosBelow.forEach((combo) => {
+      CLASSES.forEach((c) => {
+        const newCombo = [...combo, c];
+
+        const permutations = permute(newCombo);
+        let foundIn = false;
+        permutations.forEach((perm) => {
+          if (isIn(combos, perm)) foundIn = true;
+        });
+
+        if (!foundIn) combos.add(newCombo);
+      });
+    });
+  }
+
+  return combos;
+};
+
+const getExistingCombinations = (numPlayers) => {
+  const filepath = path.resolve("./victory/data/", `${numPlayers}.txt`);
+
+  let rawData;
+  try {
+    rawData = fs.readFileSync(filepath, {
+      encoding: "utf-8",
+    });
+  } catch (error) {
+    console.log("error: ", error);
+    fs.writeFileSync(filepath, "");
+    rawData = "";
+  }
+
+  let data = new Set(
     rawData
       .trim()
       .split("\n")
@@ -62,9 +113,14 @@ const getExistingCombinations = (numPlayers) => {
         row
           .trim()
           .split(",")
-          .map((type) => type.trim()),
-      ),
+          .map((type) => type.trim())
+      )
   );
+
+  console.log(data);
+
+  const d = [...data];
+  if (d.length === 1 && d[0].length === 1 && !d[0][0]) data = new Set();
 
   let message;
   const maxCombos = maximumCombinations(numPlayers);
@@ -90,46 +146,42 @@ const getExistingCombinations = (numPlayers) => {
 
 const writeLine = (combination) => {
   fs.appendFileSync(
-    filepathMap.get(combination.length),
+    path.resolve("./victory/data/", `${combination.length}.txt`),
     combination.join(",") + "\n",
     {
       encoding: "utf-8",
-    },
+    }
   );
+};
+
+/**
+ * Computes the intersection between all combinations and existing combinations
+ * @param {Number} numPlayers
+ * @param {Set} existingCombinations
+ * @returns {Array}
+ */
+const createViableCombinations = (numPlayers, existingCombinations) => {
+  const combinations = createAllCombinations(numPlayers);
+
+  const viableCombinations = new Set();
+  for (const combination of combinations) {
+    if (
+      !isIn(viableCombinations, combination) &&
+      !isIn(existingCombinations, combination)
+    ) {
+      viableCombinations.add(combination);
+    }
+  }
+
+  return Array.from(viableCombinations);
 };
 
 const createCombination = (numPlayers) => {
   const [existingCombinations, message] = getExistingCombinations(numPlayers);
 
-  const viableCombinations = new Set();
-  for (const c1 of CLASSES) {
-    for (const c2 of CLASSES) {
-      if (numPlayers === 2) {
-        const combination = [c1, c2];
+  const viable = createViableCombinations(numPlayers, existingCombinations);
 
-        if (
-          !isIn(existingCombinations, combination) &&
-          !isIn(viableCombinations, combination)
-        ) {
-          viableCombinations.add(combination);
-        }
-      } else if (numPlayers === 3) {
-        for (const c3 of CLASSES) {
-          const combination = [c1, c2, c3];
-
-          if (
-            !isIn(existingCombinations, combination) &&
-            !isIn(viableCombinations, combination)
-          ) {
-            viableCombinations.add(combination);
-          }
-        }
-      }
-    }
-  }
-
-  const viableList = Array.from(viableCombinations);
-  const choice = viableList[Math.floor(Math.random() * viableList.length)];
+  const choice = viable[Math.floor(Math.random() * viable.length)];
   return [choice, message];
 };
 

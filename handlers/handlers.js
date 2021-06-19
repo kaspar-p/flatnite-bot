@@ -37,12 +37,12 @@ const helpHandler = async (client, msg) => {
     if (Object.keys(commands).includes(argument)) {
       sendMessage(
         client,
-        `Command: '${argument}' -> ${commands[argument].helpText}`,
+        `Command: '${argument}' -> ${commands[argument].helpText}`
       );
     } else {
       sendMessage(
         client,
-        "Unknown command! Try '.help' with no arguments to learn all recognized commands!",
+        "Unknown command! Try '.help' with no arguments to learn all recognized commands!"
       );
     }
   } else {
@@ -111,7 +111,7 @@ const registerHandler = async (client, { content }) => {
     writeRegister(newRegister);
     sendMessage(
       client,
-      `Command: '${newRegister}' registered for a gamers' use.`,
+      `Command: '${newRegister}' registered for a gamers' use.`
     );
   } else {
     sendMessage(
@@ -120,7 +120,7 @@ const registerHandler = async (client, { content }) => {
         validationReport.errorMessages.length
       } errors returned: \n${validationReport.errorMessages
         .map((errorText) => `-> ${errorText}`)
-        .join("\n")}`,
+        .join("\n")}`
     );
   }
 };
@@ -131,14 +131,17 @@ const againHandler = async (client, msg) => {
   if (!playerNumArg || isNaN(parseInt(playerNumArg))) {
     sendMessage(
       client,
-      `Number of players input '${playerNumArg}' is not valid.`,
+      `Number of players input '${playerNumArg}' is not valid.`
     );
     return;
   }
 
   const num = parseInt(playerNumArg);
-  if (num !== 2 && num !== 3) {
-    sendMessage(client, `Number of players must be either 2 or 3!`);
+  if (!num || num < 1 || num > 4) {
+    sendMessage(
+      client,
+      `Number of players invalid! Must satisfy: 1 <= n <= 4!`
+    );
     return;
   }
 
@@ -147,24 +150,13 @@ const againHandler = async (client, msg) => {
 
   sendMessage(client, message);
 
-  if (num === 3) {
-    sendMessage(
-      client,
-      `Try this: 
-        -> [6krill] player1: ${newCombination[0].toUpperCase()}
-        -> [6krill] player2: ${newCombination[1].toUpperCase()}
-        -> [6krill] player3: ${newCombination[2].toUpperCase()} 
-      `,
-    );
-  } else {
-    sendMessage(
-      client,
-      `Try this:
-        -> [6krill] player1: ${newCombination[0].toUpperCase()}
-        -> [6krill] player2: ${newCombination[1].toUpperCase()}
-      `,
-    );
+  let assignment = "Try this:\n";
+  for (let i = 0; i < num; i++) {
+    const chosenClass = newCombination[i].toUpperCase();
+    assignment += ` -> [6krill] player${num}: ${chosenClass}\n`;
   }
+
+  sendMessage(client, assignment);
 };
 
 const victoryHandler = async (client, msg) => {
@@ -184,8 +176,8 @@ const victoryHandler = async (client, msg) => {
   });
   if (!validClasses) return;
 
-  if (classArgs.length !== 2 && classArgs.length !== 3) {
-    sendMessage(client, "There must be exactly two or three classes in a dub!");
+  if (classArgs.length < 1 || classArgs.length > 4) {
+    sendMessage(client, "Too few or too many arguments!");
     return;
   }
 
@@ -269,7 +261,7 @@ const howManyHandler = async (client) => {
       `Links of length 1  :::  ${numOne} / ${links.length} = ${onePercentage}\n` +
       `Links of length 2  :::  ${numTwo} / ${links.length} = ${twoPercentage}\n` +
       `Links of length 3  :::  ${numThree} / ${links.length} = ${threePercentage}\n` +
-      `Links of length 4  :::  ${numFour} / ${links.length} = ${fourPercentage}`,
+      `Links of length 4  :::  ${numFour} / ${links.length} = ${fourPercentage}`
   );
 };
 

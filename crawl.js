@@ -11,7 +11,7 @@ try {
 } catch (err) {
   console.log(
     "This operating system doesn't support chromedriver.\n" +
-      "Using custom-installed linux package.",
+      "Using custom-installed linux package."
   );
 }
 
@@ -52,7 +52,7 @@ const connectToSite = async () => {
       await driver.executeScript(
         "localStorage.setItem(arguments[0],arguments[1])",
         key,
-        localStorageData[key],
+        localStorageData[key]
       );
     }
 
@@ -72,8 +72,8 @@ const connectToSite = async () => {
 const getOpenModals = async () => {
   return await driver.findElements(
     By.xpath(
-      "//div[contains(@class, 'modal') and contains(@style, 'display: block')]",
-    ),
+      "//div[contains(@class, 'modal') and contains(@style, 'display: block')]"
+    )
   );
 };
 

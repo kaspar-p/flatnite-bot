@@ -23,7 +23,7 @@ const handleMessage = async (client, msg) => {
       sendMessage(
         client,
         "Bot is working hard with tears streaming down its face.\n" +
-          "Please wait a few minutes for the bot to be ready for gaming.",
+          "Please wait a few minutes for the bot to be ready for gaming."
       );
     }
   }

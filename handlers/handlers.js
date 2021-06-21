@@ -14,7 +14,7 @@ const {
   writeCombination,
   createCombination,
   getExistingCombinations,
-  isIn,
+  combinationToInvariant,
 } = require("../victory/lib");
 
 const crawlRequestHandler = async (client, msg) => {
@@ -76,8 +76,9 @@ const queryHandler = async (client, msg) => {
 
   // Send the user a new combination to try
   const [alreadyCompleted] = getExistingCombinations(num);
+  const invariant = combinationToInvariant(combination);
 
-  if (isIn(alreadyCompleted, combination)) {
+  if (alreadyCompleted.has(invariant)) {
     sendMessage(client, `You have won with this combination before.`);
   } else {
     sendMessage(client, `You have NOT won with this combination before.`);
@@ -137,7 +138,7 @@ const againHandler = async (client, msg) => {
   }
 
   const num = parseInt(playerNumArg);
-  if (!num || num < 1 || num > 4) {
+  if (!num || num < 1) {
     sendMessage(
       client,
       `Number of players invalid! Must satisfy: 1 <= n <= 4!`
@@ -153,7 +154,7 @@ const againHandler = async (client, msg) => {
   let assignment = "Try this:\n";
   for (let i = 0; i < num; i++) {
     const chosenClass = newCombination[i].toUpperCase();
-    assignment += ` -> [6krill] player${num}: ${chosenClass}\n`;
+    assignment += ` -> [6krill] player${i + 1}: ${chosenClass}\n`;
   }
 
   sendMessage(client, assignment);

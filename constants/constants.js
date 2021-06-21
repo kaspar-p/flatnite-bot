@@ -15,6 +15,14 @@ const CHANNEL = MODE.DEVELOP
 const REGISTRY_FILEPATH = path.resolve("./register", "registers.txt");
 
 const CLASSES = ["demo", "tank", "scout", "medic", "assault", "sniper"];
+const PRIMES = [2n, 3n, 5n, 7n, 11n, 13n];
+const classInvariants = {};
+const inverseClassInvariants = {};
+
+PRIMES.forEach((prime, index) => {
+  classInvariants[CLASSES[index]] = prime;
+  inverseClassInvariants[prime] = CLASSES[index];
+});
 
 const REQUIREMENTS = [
   (newRegister) => ({
@@ -63,5 +71,8 @@ module.exports = {
   CHANNEL,
   REGISTRY_FILEPATH,
   REQUIREMENTS,
+  PRIMES,
   CLASSES,
+  classInvariants,
+  inverseClassInvariants,
 };

@@ -146,7 +146,8 @@ const getLink = async () => {
 
 const refreshSite = async () => {
   try {
-    await driver.get("http://surviv.io/#1111");
+    await connectToSite();
+    await closeAllModals();
   } catch (error) {
     console.log("Error refreshing site: ", error);
   }

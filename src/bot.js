@@ -36,3 +36,8 @@ scheduler.scheduleJob("00 16 * * *", async () => {
     setTimeout(() => sendMode(client), 30 * 1000);
   }
 });
+
+// Each hour
+scheduler.scheduleJob("00 * * * *", async () => {
+  await refreshSite();
+});

@@ -37,7 +37,7 @@ scheduler.scheduleJob("00 16 * * *", async () => {
   }
 });
 
-// Each hour
+// Each hour except noon
 scheduler.scheduleJob("00 0-11,13-23 * * *", async () => {
   await refreshSite();
 });

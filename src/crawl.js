@@ -1,8 +1,8 @@
 const chrome = require("selenium-webdriver/chrome");
 const childProcess = require("child_process");
 const { until, Builder, By } = require("selenium-webdriver");
-const localStorageData = require("./auth/ls");
-const cookies = require("./auth/cookies");
+const localStorageData = require("../auth/ls");
+const cookies = require("../auth/cookies");
 
 let binPath;
 try {
@@ -19,7 +19,10 @@ let driver;
 
 const spinOffChromeDriverInstance = async () => {
   childProcess.execFile(binPath, [], (err, stdout, stderr) => {
-    if (err || stderr) console.log("Chromedriver error: ", err, stderr);
+    if (err || stderr) {
+      console.log("Chromedriver error: ", err, stderr);
+      throw err;
+    }
   });
 };
 
@@ -65,7 +68,8 @@ const connectToSite = async () => {
     await closeAllModals();
     console.log("Done connecting. Ready for user-input.");
   } catch (error) {
-    console.log("Error reached: ", error);
+    console.log("Error while getting website!");
+    throw error;
   }
 };
 
@@ -80,12 +84,7 @@ const getOpenModals = async () => {
 const closeAllModals = async () => {
   // Click through all promotional modals
   let visibleModals;
-  try {
-    visibleModals = await getOpenModals();
-  } catch (error) {
-    console.log("Error reached in finding modals to close: ", error);
-    return;
-  }
+  visibleModals = await getOpenModals();
 
   while (visibleModals.length > 0) {
     console.log("Open modals found: ", visibleModals.length);
@@ -99,8 +98,8 @@ const closeAllModals = async () => {
 
       visibleModals = await getOpenModals();
     } catch (error) {
-      console.log("Error encountered while closing modal: ", error);
-      break;
+      console.log("Error while closing modals!");
+      throw error;
     }
   }
 
@@ -115,7 +114,8 @@ const createTeam = async () => {
 
     console.log("Team created.");
   } catch (error) {
-    console.log("Error in creating team: ", error);
+    console.log("Error in creating team!");
+    throw error;
   }
 };
 
@@ -129,7 +129,8 @@ const leaveTeam = async () => {
 
     console.log("Team left.");
   } catch (error) {
-    console.log("Error in leaving team: ", error);
+    console.log("Error in leaving team!");
+    throw error;
   }
 };
 
@@ -140,7 +141,8 @@ const getLink = async () => {
 
     return url.toString();
   } catch (error) {
-    console.log("Error in getting link: ", error);
+    console.log("Error in getting link!");
+    throw error;
   }
 };
 
@@ -148,24 +150,23 @@ const refreshSite = async () => {
   try {
     await connectToSite();
     await closeAllModals();
+    console.log("Done refreshing!");
   } catch (error) {
-    console.log("Error refreshing site: ", error);
+    console.log("Error refreshing site!");
+    throw error;
   }
 };
 
 const handleUserInput = async () => {
   try {
-    // console.log("-- Begin handling user input --");
-
     await createTeam();
     const link = await getLink();
-    // console.log("Link gotten: ", link);
     await leaveTeam();
 
-    // console.log("-- Finished handling user input --");
     return link;
   } catch (error) {
-    console.log("User input error reached: ", error);
+    console.log("User input error reached!");
+    throw error;
   }
 };
 
@@ -187,7 +188,8 @@ const getOtherMode = async () => {
 
     return modeText.toUpperCase() + " " + typeText.toUpperCase();
   } catch (error) {
-    console.log("Error getting other mode: ", error);
+    console.log("Error getting other mode!");
+    throw error;
   }
 };
 

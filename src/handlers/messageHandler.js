@@ -2,6 +2,7 @@ const available = require("../balancer");
 const { commands } = require("../constants/commands");
 const { handlerMap } = require("./handlers");
 const { sendMessage } = require("../message");
+const log = require("../../logs/logging");
 
 const handleMessage = async (client, msg) => {
   let matchedCommand;
@@ -17,7 +18,12 @@ const handleMessage = async (client, msg) => {
     if (!matchedCommand.startsWith(".")) matchedCommand = ".recognized-command";
     if (available.ready) {
       available.changeReadyStatus(false);
-      await handlerMap[matchedCommand](client, msg);
+      try {
+        await handlerMap[matchedCommand](client, msg);
+      } catch (error) {
+        console.log("Error occurred: ", error);
+        log(error);
+      }
       available.changeReadyStatus(true);
     } else {
       sendMessage(

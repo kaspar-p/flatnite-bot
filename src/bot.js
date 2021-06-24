@@ -38,6 +38,6 @@ scheduler.scheduleJob("00 16 * * *", async () => {
 });
 
 // Each hour
-scheduler.scheduleJob("00 * * * *", async () => {
+scheduler.scheduleJob("00 0-11,13-23 * * *", async () => {
   await refreshSite();
 });

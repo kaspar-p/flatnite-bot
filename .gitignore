@@ -1,6 +1,6 @@
 /node_modules
 /auth
 .env
-/src/victory/data/
 /src/analysis/data/
-logs/
+/src/data/
+/logs/

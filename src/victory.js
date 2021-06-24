@@ -180,9 +180,7 @@ const createCombination = (numPlayers) => {
   const viable = createViableCombinations(numPlayers, existingCombinations);
 
   const choice = viable[Math.floor(Math.random() * viable.length)];
-  console.log(choice);
   const combination = _.shuffle(invariantToCombination(choice));
-  console.log(combination);
   return [combination, message];
 };
 

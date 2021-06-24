@@ -102,7 +102,6 @@ class CommandStore {
     });
 
     autorun(() => this.updateCommands());
-    console.log(this);
   }
 
   addCommand(command) {

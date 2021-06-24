@@ -1,4 +1,4 @@
-const { CHANNEL } = require("./constants/constants");
+const { CHANNEL } = require("./constants");
 const { getOtherMode } = require("./crawl");
 
 const sendMessage = async (client, text) => {
@@ -18,8 +18,13 @@ const addMessageContent = async (message, newContent) => {
   await message.edit(content + " " + newContent);
 };
 
+const replaceMessageContent = async (message, newContent) => {
+  await message.edit(newContent);
+};
+
 module.exports = {
   sendMessage,
   sendMode,
   addMessageContent,
+  replaceMessageContent,
 };

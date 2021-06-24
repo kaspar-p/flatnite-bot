@@ -6,15 +6,17 @@ const MODE = {
   DEVELOP_MSG: process.argv.includes("--develop-msg"),
 };
 MODE.DEVELOP = MODE.DEVELOP_MSG || MODE.DEVELOP_WEB;
-MODE.PRODUCTION = !(MODE.DEVELOP_MSG || MODE.DEVELOP_WEB);
+MODE.PRODUCTION = !MODE.DEVELOP;
 
 const CHANNEL = MODE.DEVELOP
   ? process.env.TEST_CHANNEL_ID
   : process.env.CHANNEL_ID;
 
-const REGISTRY_FILEPATH = path.resolve("./register", "registers.txt");
+const REGISTRY_FILEPATH = path.resolve("src", "data", "registers.txt");
 
 const CLASSES = ["demo", "tank", "scout", "medic", "assault", "sniper"];
+// The max number of simultaneous players at a time
+const CLASSES_LIMIT = 50;
 const PRIMES = [2n, 3n, 5n, 7n, 11n, 13n];
 const classInvariants = {};
 const inverseClassInvariants = {};
@@ -73,6 +75,7 @@ module.exports = {
   REQUIREMENTS,
   PRIMES,
   CLASSES,
+  CLASSES_LIMIT,
   classInvariants,
   inverseClassInvariants,
 };

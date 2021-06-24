@@ -7,9 +7,7 @@ function sleep(ms) {
 }
 
 const analyze = async () => {
-  const base = process.env.PWD;
-
-  const linkPath = path.join(base, "analysis/data/links.txt");
+  const linkPath = path.join(__dirname, "./data/links.txt");
 
   await crawler.connectToSite();
   await sleep(5000);

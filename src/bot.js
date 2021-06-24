@@ -5,8 +5,8 @@ const scheduler = require("node-schedule");
 const client = new Discord.Client();
 const { connectToSite, refreshSite } = require("./crawl");
 const handleMessages = require("./handlers/messageHandler");
-const available = require("./balancer");
-const { MODE } = require("./constants/constants");
+const store = require("./store");
+const { MODE } = require("./constants");
 const { sendMode } = require("./message");
 
 client.on("ready", async () => {
@@ -16,7 +16,7 @@ client.on("ready", async () => {
     // Begin accessing surviv.io
     await connectToSite();
   }
-  available.changeReadyStatus(true);
+  store.availability.setReady(true);
 });
 
 client.on("message", async (msg) => {
@@ -27,7 +27,7 @@ client.login(process.env.BOT_TOKEN);
 
 // Every day at noon
 scheduler.scheduleJob("00 16 * * *", async () => {
-  if (available.ready) {
+  if (store.availability.ready) {
     await refreshSite();
     await sendMode(client);
   } else {

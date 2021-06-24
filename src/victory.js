@@ -6,7 +6,10 @@ const {
   inverseClassInvariants,
   PRIMES,
   CLASSES,
-} = require("../constants/constants");
+} = require("./constants");
+
+const filepath = (numPlayers) =>
+  path.resolve(__dirname, `../data/victory-data/${numPlayers}.txt`);
 
 const maximumCombinations = (numPlayers) => {
   const factorial = (n) => {
@@ -31,8 +34,8 @@ const invariantToCombination = (invariant) => {
   const combination = [];
   let number = invariant;
   let index = 0;
-  while (!(number in PRIMES)) {
-    if (index > 5) {
+  while (!PRIMES.includes(number)) {
+    if (index > PRIMES.length) {
       throw new Error("Index out of bounds! On integer: ", invariant);
     }
 
@@ -48,6 +51,9 @@ const invariantToCombination = (invariant) => {
       index++;
     }
   }
+
+  // Guaranteed PRIMES.includes(number) is true due to while loop condition
+  combination.push(inverseClassInvariants[number]);
   combination.sort();
 
   return combination;
@@ -99,16 +105,14 @@ const createAllCombinations = (numPlayers) => {
  * @returns {[Set<number>, String]}
  */
 const getExistingCombinations = (numPlayers) => {
-  const filepath = path.resolve("./victory/data/", `${numPlayers}.txt`);
-
   let rawData;
   try {
-    rawData = fs.readFileSync(filepath, {
+    rawData = fs.readFileSync(filepath(numPlayers), {
       encoding: "utf-8",
     });
   } catch (error) {
     console.log("error: ", error);
-    fs.writeFileSync(filepath, "");
+    fs.writeFileSync(filepath(numPlayers), "");
     rawData = "";
   }
 
@@ -141,10 +145,7 @@ const getExistingCombinations = (numPlayers) => {
  */
 const writeLine = (invariant) => {
   fs.appendFileSync(
-    path.resolve(
-      "./victory/data/",
-      `${invariantToCombination(invariant).length}.txt`
-    ),
+    filepath(invariantToCombination(invariant).length),
     invariant + "\n",
     {
       encoding: "utf-8",

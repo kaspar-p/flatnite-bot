@@ -18,6 +18,11 @@ try {
 let driver;
 
 const spinOffChromeDriverInstance = async () => {
+  try {
+    childProcess.execSync("killall chromedriver");
+  } catch {
+    // There were no processes, no worries
+  }
   childProcess.execFile(binPath, [], (err, stdout, stderr) => {
     if (err || stderr) {
       console.log("Chromedriver error: ", err, stderr);
@@ -26,7 +31,7 @@ const spinOffChromeDriverInstance = async () => {
   });
 };
 
-const connectToSite = async () => {
+const connectToSite = async (isFirstTime = true) => {
   console.log("Begin connecting to website.");
 
   if (process.platform === "linux") {
@@ -35,7 +40,7 @@ const connectToSite = async () => {
       .setChromeOptions(new chrome.Options().addArguments("--headless"))
       .build();
   } else {
-    spinOffChromeDriverInstance();
+    if (isFirstTime) spinOffChromeDriverInstance();
     driver = await new Builder().forBrowser("chrome").build();
   }
 
@@ -148,8 +153,8 @@ const getLink = async () => {
 
 const refreshSite = async () => {
   try {
-    await connectToSite();
-    await closeAllModals();
+    await driver.quit();
+    await connectToSite(false);
     console.log("Done refreshing!");
   } catch (error) {
     console.log("Error refreshing site!");

@@ -1,9 +1,0 @@
-
-TypeError: Cannot read property 'findElement' of undefined
-TypeError: Cannot read property 'findElement' of undefined
-TypeError: Cannot read property 'findElement' of undefined
-TypeError: Cannot read property 'findElement' of undefined
-TypeError: Cannot read property 'findElement' of undefined
-Error: ENOENT: no such file or directory, open '/Users/kasparpoland/desktop/developing/flatnite-bot/analysis/data/links.txt'
-Error: ENOENT: no such file or directory, open '/Users/kasparpoland/desktop/developing/flatnite-bot/analysis/data/links.txt'
-TypeError: handlerMap[command.command] is not a function

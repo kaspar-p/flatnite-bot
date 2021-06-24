@@ -3,4 +3,4 @@
 .env
 /src/analysis/data/
 /src/data/
-/logs/
+/logs/errors.txt

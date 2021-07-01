@@ -19,7 +19,7 @@ const addMessageContent = async (message, newContent) => {
 };
 
 const replaceMessageContent = async (message, newContent) => {
-  await message.edit(newContent);
+  return await message.edit(newContent);
 };
 
 module.exports = {

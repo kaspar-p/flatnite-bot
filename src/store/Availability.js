@@ -14,7 +14,7 @@ class AvailabilityStore {
    * Set the ready status
    * @param {Boolean} setting
    */
-  setReady(setting) {
+  setReady(client, setting) {
     this.ready = setting;
   }
 }

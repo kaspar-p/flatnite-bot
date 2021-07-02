@@ -1,7 +1,7 @@
 const { sendMode } = require("../../message");
 
-const modeHandler = async (client) => {
-  await sendMode(client);
+const modeHandler = async () => {
+  await sendMode();
 };
 
 module.exports = modeHandler;

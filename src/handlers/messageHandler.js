@@ -6,17 +6,17 @@ const { sendMessage } = require("../message");
 const log = require("../../logs/logging");
 const { MODE } = require("../constants");
 
-const runHandler = async (keyword, client, msg) => {
+const runHandler = async (keyword, msg) => {
   try {
-    await handlerMap[keyword](client, msg);
+    await handlerMap[keyword](msg);
   } catch (error) {
     console.log("Error occurred: ", error);
     log(error);
-    sendMessage(client, "Error occurred! Request went unprocessed!");
+    sendMessage("Error occurred! Request went unprocessed!");
   }
 };
 
-const handleMessage = async (client, msg) => {
+const handleMessage = async (msg) => {
   let command;
 
   _.forEach(commands, (testCommand) => {
@@ -24,13 +24,12 @@ const handleMessage = async (client, msg) => {
   });
 
   if (!command) {
-    // Just a regular message not for the bot
+    // Just a regular message, not for the bot
     return;
   }
 
   if (!availability.ready) {
     sendMessage(
-      client,
       "Bot is working hard with tears streaming down its face.\n" +
         "Please wait a few minutes for the bot to be ready for gaming."
     );
@@ -39,19 +38,19 @@ const handleMessage = async (client, msg) => {
 
   if (command.type === "crawl") {
     if (MODE.DEVELOP_MSG) {
-      sendMessage(client, "Cannot crawl in message development mode!");
+      sendMessage("Cannot crawl in message development mode!");
       return;
     }
 
-    let kw;
-    if (command.command.startsWith(".")) kw = command.command;
-    else kw = ".recognized-command";
+    const kw = command.command.startsWith(".")
+      ? command.command
+      : ".recognized-command";
 
     availability.setReady(false);
-    await runHandler(kw, client, msg);
+    await runHandler(kw, msg);
     availability.setReady(true);
   } else {
-    await runHandler(command.command, client, msg);
+    await runHandler(command.command, msg);
   }
 };
 

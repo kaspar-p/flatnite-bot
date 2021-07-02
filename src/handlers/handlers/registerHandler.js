@@ -26,9 +26,9 @@ const checkValidation = (newRegister) => {
   return { isValid: errorMessages.length === 0, errorMessages };
 };
 
-const registerHandler = async (client, { content }) => {
+const registerHandler = async ({ content }) => {
   if (!content.split(" ")[1]) {
-    sendMessage(client, "New command cannot be empty!");
+    sendMessage("New command cannot be empty!");
     return;
   }
 
@@ -44,7 +44,6 @@ const registerHandler = async (client, { content }) => {
 
   if (!validationReport.isValid) {
     sendMessage(
-      client,
       `${
         validationReport.errorMessages.length
       } errors returned: \n${validationReport.errorMessages
@@ -55,10 +54,7 @@ const registerHandler = async (client, { content }) => {
   }
 
   commands.addCommand(newRegister);
-  sendMessage(
-    client,
-    `Command: '${newRegister}' registered for a gamers' use.`
-  );
+  sendMessage(`Command: '${newRegister}' registered for a gamers' use.`);
 };
 
 module.exports = registerHandler;

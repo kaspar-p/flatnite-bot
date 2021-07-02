@@ -1,6 +1,6 @@
 const { sendMessage } = require("../../message");
 
-const speakHandler = async (client) => {
+const speakHandler = async () => {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
   const numLetters = 40;
@@ -14,7 +14,7 @@ const speakHandler = async (client) => {
     }
   }
 
-  sendMessage(client, sentence);
+  sendMessage(sentence);
 };
 
 module.exports = speakHandler;

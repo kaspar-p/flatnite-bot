@@ -1,13 +1,14 @@
 const { CHANNEL } = require("./constants");
 const { getOtherMode } = require("./crawl");
+const { client } = require("./store");
 
-const sendMessage = async (client, text) => {
+const sendMessage = async (text) => {
   const channel = client.channels.cache.get(CHANNEL);
   const message = await channel.send(text);
   return message;
 };
 
-const sendMode = async (client) => {
+const sendMode = async () => {
   const msg = await sendMessage(client, "The mode today is: ");
   const otherMode = await getOtherMode();
   await addMessageContent(msg, otherMode);

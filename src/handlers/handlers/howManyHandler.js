@@ -3,7 +3,7 @@ const path = require("path");
 
 const { sendMessage } = require("../../message");
 
-const howManyHandler = async (client) => {
+const howManyHandler = async () => {
   const linksPath = path.join(__dirname, "../../analysis/data/links.txt");
 
   const linksData = fs.readFileSync(linksPath, {
@@ -35,7 +35,6 @@ const howManyHandler = async (client) => {
   const fourPercentage = toPercentage(numFour);
 
   sendMessage(
-    client,
     `Links of length 0  :::  ${numZero} / ${links.length} = ${zeroPercentage}\n` +
       `Links of length 1  :::  ${numOne} / ${links.length} = ${onePercentage}\n` +
       `Links of length 2  :::  ${numTwo} / ${links.length} = ${twoPercentage}\n` +

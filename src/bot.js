@@ -2,37 +2,37 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const scheduler = require("node-schedule");
 
-const discordClient = new Discord.Client();
+const client = new Discord.Client();
 const { connectToSite, refreshSite } = require("./crawl");
 const handleMessage = require("./handlers/messageHandler");
-const { availability, client } = require("./store");
+const store = require("./store");
 const { MODE } = require("./constants");
 const { sendMode } = require("./message");
 
-discordClient.on("ready", async () => {
+client.on("ready", async () => {
   console.log("Successfully connected to discord server.");
-  client.setClient(client);
+  store.client.setClient(client);
 
   if (MODE.PRODUCTION || MODE.DEVELOP_WEB) {
     // Begin accessing surviv.io
     await connectToSite();
   }
 
-  availability.setReady(true);
+  store.availability.setReady(true);
 });
 
-discordClient.on("message", async (msg) => {
+client.on("message", async (msg) => {
   await handleMessage(msg);
 });
 
-discordClient.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);
 
 // 4pm
 const timeToSendMode = 16;
 
 // Every day at noon
 scheduler.scheduleJob(`00 ${timeToSendMode} * * *`, async () => {
-  if (availability.ready) {
+  if (store.availability.ready) {
     await refreshSite();
     await sendMode();
   } else {

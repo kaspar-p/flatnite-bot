@@ -1,4 +1,5 @@
 const { observable, makeObservable, action } = require("mobx");
+const { client } = require("../store");
 
 class AvailabilityStore {
   ready = false;
@@ -14,8 +15,15 @@ class AvailabilityStore {
    * Set the ready status
    * @param {Boolean} setting
    */
-  setReady(client, setting) {
+  setReady(setting) {
     this.ready = setting;
+
+    client.user.setPresence({
+      status: "online",
+      activity: {
+        name: setting ? "hardly working" : "working hard",
+      },
+    });
   }
 }
 

@@ -26,6 +26,8 @@ PRIMES.forEach((prime, index) => {
   inverseClassInvariants[prime] = CLASSES[index];
 });
 
+const AUTHENTICATION_PIN_LENGTH = 5;
+
 const REQUIREMENTS = [
   (newRegister) => ({
     requirement: [newRegister.length < 30],
@@ -72,6 +74,7 @@ module.exports = {
   MODE,
   CHANNEL,
   REGISTRY_FILEPATH,
+  AUTHENTICATION_PIN_LENGTH,
   REQUIREMENTS,
   PRIMES,
   CLASSES,

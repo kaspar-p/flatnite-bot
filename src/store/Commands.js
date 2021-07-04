@@ -92,6 +92,28 @@ const REQUIRED_COMMANDS = {
     helpSnippets: [".speak"],
     type: "msg",
   }),
+  // Authentication commands
+  ".reboot": new Command({
+    command: ".reboot",
+    helpText:
+      "Typing '.reboot' will make the physical machine that gamingbot runs on restart.",
+    helpSnippets: [".reboot"],
+    type: "msg",
+  }),
+  ".authenticate-request": new Command({
+    command: ".authenticate-request",
+    helpText:
+      "Typing '.authenticate-request' will make gamingbot send a verification code to your phone number.",
+    helpSnippets: [".authenticate-request"],
+    type: "msg",
+  }),
+  ".authenticate-response": new Command({
+    command: ".authenticate-response",
+    helpText:
+      "Typing '.authenticate-response <number>' will finish the authentication process.",
+    helpSnippets: [".authenticate-response <number>"],
+    type: "msg",
+  }),
 };
 
 class CommandStore {

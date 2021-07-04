@@ -6,6 +6,11 @@ const { sendMessage } = require("../message");
 const log = require("../../logs/logging");
 const { MODE } = require("../constants");
 
+/**
+ * Runs the specific handler
+ * @param {string} keyword The name of the handler defined in handlerMap
+ * @param {import("discord.js").Message} msg The original message the user sent
+ */
 const runHandler = async (keyword, msg) => {
   try {
     await handlerMap[keyword](msg);
@@ -16,6 +21,10 @@ const runHandler = async (keyword, msg) => {
   }
 };
 
+/**
+ * Handle all messages, redirecting them based on their command
+ * @param {import("discord.js").Message} msg
+ */
 const handleMessage = async (msg) => {
   let command;
 

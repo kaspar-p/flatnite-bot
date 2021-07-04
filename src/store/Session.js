@@ -1,66 +1,66 @@
 const { observable, makeObservable, action } = require("mobx");
+const {
+  PIN_EXPIRATION_TIME,
+  AUTHENTICATION_PIN_LENGTH,
+} = require("../constants");
 
 /**
  * @typedef {import("discord.js").User} User
  */
 
+/**
+ * Creates a random numeric PIN (as a string)
+ * @returns {string}
+ */
+const createPIN = () => {
+  const alphabet = "0123456789";
+
+  let pin = "";
+  for (let i = 0; i < AUTHENTICATION_PIN_LENGTH; i++) {
+    pin += alphabet[Math.floor(Math.random() * alphabet.length)];
+  }
+
+  return pin;
+};
+
 class SessionStore {
   authenticatedUsers = [];
   userAuthenticating = {};
-  authenticationPIN = {};
 
   constructor() {
     makeObservable(this, {
       authenticatedUsers: observable,
       userAuthenticating: observable,
-      authenticationPIN: observable,
       authenticateUser: action,
-      setUserAuthenticating: action,
-      clearUserAuthenticating: action,
-      setAuthenticationPIN: action,
-      clearAuthenticationPIN: action,
+      startAuthenticationProcess: action,
+      endAuthenticationProcess: action,
     });
   }
 
   /**
-   * Sets the status of if the session is currently authenticating a user
+   * Begins the authentication process for a user
    * @action
-   * @param {User} user The user with an authentication status
-   * @param {bool} setting the state
+   * @param {User} user The user that wants to authenticate themselves
+   * @returns {string} the pin that is generated for the user
    */
-  setUserAuthenticating(user, setting) {
-    this.userAuthenticating[user.id] = setting;
-  }
-
-  /**
-   * Once the user has been authenticated, clear their in-progress status
-   * @action
-   * @param {User} user The user that has been authenticated
-   */
-  clearUserAuthenticating(user) {
-    delete this.userAuthenticating[user.id];
-  }
-
-  /**
-   * When a text is sent, set the PIN so that we know if the PIN is correct
-   * @action
-   * @param {User} user The user that the PIN corresponds to
-   * @param {string?} pin the PIN to authenticate with
-   */
-  setAuthenticationPIN(user, pin) {
-    this.authenticationPIN[user.id] = {
+  startAuthenticationProcess(user) {
+    const pin = createPIN();
+    this.userAuthenticating[user.id] = {
       pin,
       created: Date.now(),
     };
+
+    setTimeout(() => this.endAuthenticationProcess(user), PIN_EXPIRATION_TIME);
+    return pin;
   }
 
   /**
-   * When a user has been authenticated, clear their PIN
+   * Once the user has been authenticated, or on key expiry, clear their in-progress status
    * @action
-   * @param {*} user The user that is authenticated now
+   * @param {User} user The user to delete their in-progress status
    */
-  clearAuthenticationPIN(user) {
-    delete this.authenticationPIN[user.id];
+  endAuthenticationProcess(user) {
+    delete this.userAuthenticating[user.id];
   }
 
   /**
@@ -70,8 +70,7 @@ class SessionStore {
    */
   authenticateUser(user) {
     this.authenticatedUsers.push(user.id);
-    this.clearUserAuthenticating(user, false);
-    this.clearAuthenticationPIN(user, null);
+    this.endAuthenticationProcess(user);
   }
 
   /**
@@ -80,7 +79,18 @@ class SessionStore {
    * @returns {string} The PIN corresponding to that user
    */
   getPIN(user) {
-    return this.authenticationPIN[user.id];
+    return this.userAuthenticating[user.id].pin;
+  }
+
+  /**
+   * Precondition: user has started the authentication process
+   * Whether now is within the time that the PIN is valid
+   * @param {*} user
+   * @returns
+   */
+  isPINExpired(user) {
+    const elapsed = Date.now() - this.userAuthenticating[user.id].created;
+    return elapsed >= PIN_EXPIRATION_TIME;
   }
 
   /**
@@ -98,7 +108,7 @@ class SessionStore {
    * @returns {bool} the decision
    */
   userCanAuthenticate(user) {
-    const allowedUsersIDs = ["Thorn#9752"];
+    const allowedUsersIDs = ["261335946123935745"];
 
     return allowedUsersIDs.includes(user.id);
   }
@@ -109,7 +119,7 @@ class SessionStore {
    * @returns {bool} Whether the user is authenticated
    */
   isAuthenticated(user) {
-    return this.authenticatedUsers.includes(user);
+    return this.authenticatedUsers.includes(user.id);
   }
 }
 

@@ -27,6 +27,7 @@ PRIMES.forEach((prime, index) => {
 });
 
 const AUTHENTICATION_PIN_LENGTH = 5;
+const PIN_EXPIRATION_TIME = 1 * 60 * 1000;
 
 const REQUIREMENTS = [
   (newRegister) => ({
@@ -75,6 +76,7 @@ module.exports = {
   CHANNEL,
   REGISTRY_FILEPATH,
   AUTHENTICATION_PIN_LENGTH,
+  PIN_EXPIRATION_TIME,
   REQUIREMENTS,
   PRIMES,
   CLASSES,

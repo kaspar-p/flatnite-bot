@@ -8,9 +8,9 @@ const { session } = require("../../store");
  * @param {import("discord.js").Message} message
  */
 const rebootHandler = async (message) => {
-  const userID = message.author.id;
+  const user = message.author;
 
-  if (session.isAuthenticated(userID)) {
+  if (session.isAuthenticated(user)) {
     sendMessage("Rebooting...");
     childProcess.execSync(`sudo reboot`);
   } else {

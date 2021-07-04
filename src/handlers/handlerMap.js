@@ -9,6 +9,9 @@ const queryHandler = require("./handlers/queryHandler");
 const howManyHandler = require("./handlers/howManyHandler");
 const speakHandler = require("./handlers/speakHandler");
 const crawlHandler = require("./handlers/crawlHandler");
+const rebootHandler = require("./handlers/rebootHandler");
+const authenticateRequestHandler = require("./handlers/authenticateRequestHandler");
+const authenticationResponseHandler = require("./handlers/authenticateResponseHandler");
 
 module.exports = {
   ".help": helpHandler,
@@ -21,5 +24,8 @@ module.exports = {
   ".query": queryHandler,
   ".how-many": howManyHandler,
   ".speak": speakHandler,
+  ".reboot": rebootHandler,
+  ".authenticate-request": authenticateRequestHandler,
+  ".authenticate-response": authenticationResponseHandler,
   ".recognized-command": crawlHandler,
 };

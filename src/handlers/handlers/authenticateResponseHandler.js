@@ -10,16 +10,17 @@ const authenticationResponseHandler = async (message) => {
 
   const msgArray = message.content.split(" ");
   if (msgArray.length !== 2) {
-    sendMessage("There are two many arguments! Expected one argument PIN.");
+    sendMessage(
+      `Invalid number of arguments! Expected 1 argument and got ${
+        msgArray.length - 1
+      }.`
+    );
     return;
   }
 
   if (!session.userIsInAuthenticationProcess(user)) {
     sendMessage(
-      "You have not started the authentication process, or your authentication key has expired!"
-    );
-    sendMessage(
-      "If you are eligible, please type '.authentication-request' to authenticate."
+      "You have not started the authentication process.\nIf you are eligible, please type '.authenticate-request' to authenticate."
     );
     return;
   }

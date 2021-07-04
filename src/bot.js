@@ -11,14 +11,18 @@ const { sendMode } = require("./message");
 
 client.on("ready", async () => {
   console.log("Successfully connected to discord server.");
-  store.client.setClient(client);
+  store.clientStore.setClient(client);
 
   if (MODE.PRODUCTION || MODE.DEVELOP_WEB) {
     // Begin accessing surviv.io
     await connectToSite();
   }
 
-  store.availability.setReady(true);
+  console.log(
+    "about to set ready. client exists? ",
+    !!store.clientStore.client
+  );
+  store.availability.setReady(true, client);
 });
 
 client.on("message", async (msg) => {

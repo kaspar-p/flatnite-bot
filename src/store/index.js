@@ -4,8 +4,8 @@ const ClientStore = require("./Client");
 const SessionStore = require("./Session");
 
 module.exports = {
-  availability: AvailabilityStore,
+  clientStore: ClientStore,
   commands: CommandStore,
-  client: ClientStore,
+  availability: AvailabilityStore,
   session: SessionStore,
 };

@@ -12,7 +12,7 @@ const rebootHandler = async (message) => {
 
   if (session.isAuthenticated(user)) {
     sendMessage("Rebooting...");
-    childProcess.execSync(`sudo reboot`);
+    childProcess.execSync(`./reboot.sh`);
   } else {
     sendMessage(
       "You are not authenticated. If you are eligible to authenticate, please send '.authenticate-request'."

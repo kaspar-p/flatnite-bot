@@ -27,7 +27,7 @@ PRIMES.forEach((prime, index) => {
 });
 
 const AUTHENTICATION_PIN_LENGTH = 5;
-const PIN_EXPIRATION_TIME = 1 * 60 * 1000;
+const PIN_EXPIRATION_TIME = 5 * 60 * 1000;
 
 const REQUIREMENTS = [
   (newRegister) => ({

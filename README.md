@@ -22,7 +22,6 @@ Be sure to have a `TEST_CHANNEL_ID` in the `.env` file. Then, run `npm install &
 
 ## Future changes
 
-- Get the bot its very own Surviv.io account so it can stop leeching off of kaspar-p's.
 - Use a free database like mongoDB or other in order to separate possible servers, rather than just saving results to the local filesystem.
 - Queue requests for a flatnite link while it is working, so that as soon as it is finished working, it can send one without the user needing to re-request a link.
 - Get the bot to automatically recognize the players playing in the lobby it created, and choose which file to save their dubs under with that.

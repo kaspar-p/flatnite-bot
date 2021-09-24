@@ -31,10 +31,9 @@ client.on("message", async (msg) => {
 
 client.login(process.env.BOT_TOKEN);
 
-// 4pm
-const timeToSendMode = 16;
+const timeToSendMode = 17;
 
-// Every day at noon
+// Every day at {timeToSendMode}
 scheduler.scheduleJob(`00 ${timeToSendMode} * * *`, async () => {
   if (store.availability.ready) {
     await refreshSite();

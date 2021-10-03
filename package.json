@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src --out-dir dist",
+    "start": "npm run flatnite-bot",
     "flatnite-bot": "node src/bot.js",
     "develop-msg": "nodemon src/bot.js --develop-msg",
     "develop-web": "nodemon src/bot.js --develop-web",

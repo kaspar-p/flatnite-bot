@@ -1,7 +1,6 @@
 const chrome = require("selenium-webdriver/chrome");
 const childProcess = require("child_process");
 const { until, Builder, By } = require("selenium-webdriver");
-const localStorageData = require("../auth/ls");
 const cookies = require("../auth/cookies");
 
 let binPath;
@@ -55,16 +54,6 @@ const connectToSite = async (isFirstTime = true) => {
     }
 
     console.log("Done adding cookies.");
-
-    for (const key of Object.keys(localStorageData)) {
-      await driver.executeScript(
-        "localStorage.setItem(arguments[0],arguments[1])",
-        key,
-        localStorageData[key]
-      );
-    }
-
-    console.log("Done adding localStorage data.");
     console.log("Requesting second time for authentication.");
 
     await driver.get("http://surviv.io/#1111");

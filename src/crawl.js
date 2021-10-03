@@ -36,7 +36,12 @@ const connectToSite = async (isFirstTime = true) => {
   if (process.platform === "linux") {
     driver = await new Builder()
       .forBrowser("chrome")
-      .setChromeOptions(new chrome.Options().addArguments("--headless"))
+      .setChromeOptions(
+        new chrome.Options().addArguments(
+          "--headless",
+          "--disable-dev-shm-usage"
+        )
+      )
       .build();
   } else {
     if (isFirstTime) spinOffChromeDriverInstance();

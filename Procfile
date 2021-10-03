@@ -1,1 +1,1 @@
-web: npm run flatnite-bot
+worker: npm run flatnite-bot

@@ -39,7 +39,8 @@ const connectToSite = async (isFirstTime = true) => {
       .setChromeOptions(
         new chrome.Options().addArguments(
           "--headless",
-          "--disable-dev-shm-usage"
+          "disable-dev-shm-usage",
+          "window-size=1920x1480"
         )
       )
       .build();

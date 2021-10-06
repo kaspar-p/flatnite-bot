@@ -36,7 +36,7 @@ const timeToSendMode = "17";
 const timeToSendModeNum = _.toInteger(timeToSendMode);
 
 // Every day at {timeToSendMode}
-scheduler.scheduleJob(`15 ${timeToSendMode} * * *`, async () => {
+scheduler.scheduleJob(`0 20 ${timeToSendMode} ? * * *`, async () => {
   console.log("SENDING MODE: ", Date.now());
   if (store.availability.ready) {
     await refreshSite();
@@ -50,7 +50,7 @@ scheduler.scheduleJob(`15 ${timeToSendMode} * * *`, async () => {
 
 // Each hour except {timeToSendMode}
 scheduler.scheduleJob(
-  `00 00-${timeToSendModeNum - 1},${timeToSendModeNum + 1}-23 * * *`,
+  `0 0-${timeToSendModeNum - 1},${timeToSendModeNum + 1}-23 * * *`,
   async () => {
     console.log("REFRESH SITE EVERY HOUR: ", Date.now());
     // await refreshSite();

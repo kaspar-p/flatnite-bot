@@ -31,7 +31,7 @@ client.on("message", async (msg) => {
 
 client.login(process.env.BOT_TOKEN);
 
-const hour = 19;
+const hour = 20;
 
 // Every day at {timeToSendMode}
 scheduler.scheduleJob(`0 0 ${hour} * * ?`, async () => {

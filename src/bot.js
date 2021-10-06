@@ -32,11 +32,11 @@ client.on("message", async (msg) => {
 
 client.login(process.env.BOT_TOKEN);
 
-const timeToSendMode = "17";
+const timeToSendMode = "18";
 const timeToSendModeNum = _.toInteger(timeToSendMode);
 
 // Every day at {timeToSendMode}
-scheduler.scheduleJob(`0 25 ${timeToSendMode} ? * * *`, async () => {
+scheduler.scheduleJob(`0 0 ${timeToSendMode} * * ?`, async () => {
   console.log("SENDING MODE: ", Date.now());
   if (store.availability.ready) {
     await refreshSite();

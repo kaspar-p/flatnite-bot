@@ -32,7 +32,7 @@ client.on("message", async (msg) => {
 
 client.login(process.env.BOT_TOKEN);
 
-const timeToSendMode = "15";
+const timeToSendMode = "18";
 const timeToSendModeNum = _.toInteger(timeToSendMode);
 
 // Every day at {timeToSendMode}

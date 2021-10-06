@@ -31,7 +31,7 @@ client.on("message", async (msg) => {
 
 client.login(process.env.BOT_TOKEN);
 
-// Midnight
+// 3pm
 const timeToSendMode = "15";
 
 // Every day at {timeToSendMode}

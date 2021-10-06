@@ -1,7 +1,6 @@
 require("dotenv").config();
 const Discord = require("discord.js");
 const scheduler = require("node-schedule");
-const _ = require("lodash");
 
 const client = new Discord.Client();
 const { connectToSite, refreshSite } = require("./crawl");
@@ -32,11 +31,10 @@ client.on("message", async (msg) => {
 
 client.login(process.env.BOT_TOKEN);
 
-const timeToSendMode = "19";
-const timeToSendModeNum = _.toInteger(timeToSendMode);
+const hour = 19;
 
 // Every day at {timeToSendMode}
-scheduler.scheduleJob(`0 0 ${timeToSendMode} * * ?`, async () => {
+scheduler.scheduleJob(`0 0 ${hour} * * ?`, async () => {
   console.log("SENDING MODE: ", Date.now());
   if (store.availability.ready) {
     await refreshSite();
@@ -49,10 +47,7 @@ scheduler.scheduleJob(`0 0 ${timeToSendMode} * * ?`, async () => {
 });
 
 // Each hour except {timeToSendMode}
-scheduler.scheduleJob(
-  `0 0-${timeToSendModeNum - 1},${timeToSendModeNum + 1}-23 * * *`,
-  async () => {
-    console.log("REFRESH SITE EVERY HOUR: ", Date.now());
-    // await refreshSite();
-  }
-);
+scheduler.scheduleJob(`0 0 0-${hour - 1},${hour + 1}-23 * * ?`, async () => {
+  console.log("REFRESH SITE EVERY HOUR: ", Date.now());
+  await refreshSite();
+});
